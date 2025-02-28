@@ -1,55 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32C1E6D1-46BA-4C3A-83BF-290E1C5D4690}</ProjectGuid>
+    <TargetFramework>net9.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PetaJson</RootNamespace>
-    <AssemblyName>PetaJson</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>PetaJson</AssemblyTitle>
+    <Product>PetaJson</Product>
+    <Copyright>Copyright ©  2016</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;PETAJSON_NO_DATACONTRACT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;PETAJSON_NO_DATACONTRACT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PetaJson.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Remove="petatest\PetaTest\PetaTest.cs" />
+    <Compile Remove="petatest\PetaTest\Program.cs" />
+    <Compile Remove="petatest\PetaTest\Properties\AssemblyInfo.cs" />
+    <Compile Remove="petatest\PetaTest\TestsAssertions.cs" />
+    <Compile Remove="TestCases\PetaTest.cs" />
+    <Compile Remove="TestCases\Program.cs" />
+    <Compile Remove="TestCases\Properties\AssemblyInfo.cs" />
+    <Compile Remove="TestCases\TestAbstractTypes.cs" />
+    <Compile Remove="TestCases\TestConcreteFromInterface.cs" />
+    <Compile Remove="TestCases\TestCustomFormat.cs" />
+    <Compile Remove="TestCases\TestDictionaryUtils.cs" />
+    <Compile Remove="TestCases\TestNullableTypes.cs" />
+    <Compile Remove="TestCases\TestOptions.cs" />
+    <Compile Remove="TestCases\TestPrimitiveTypes.cs" />
+    <Compile Remove="TestCases\TestReparse.cs" />
+    <Compile Remove="TestCases\TestsEvents.cs" />
+    <Compile Remove="TestCases\TestsGeneral.cs" />
+    <Compile Remove="TestCases\TestsReflection.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

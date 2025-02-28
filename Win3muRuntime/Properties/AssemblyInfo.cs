@@ -1,15 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Win3mu Runtime")]
-[assembly: AssemblyDescription("Windows 3 Emulator")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Topten Software")]
-[assembly: AssemblyProduct("Win3mu")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
