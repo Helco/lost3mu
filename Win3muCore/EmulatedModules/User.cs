@@ -2261,6 +2261,9 @@ namespace Win3muCore
         // 0100 - GETDRIVERINFO
         // 0101 - GETNEXTDRIVER
         // 0102 - MAPWINDOWPOINTS
+        [EntryPoint(0x0102)]
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref Win16.POINT []lpPoints, uint cPoints);
         // 0103 - BEGINDEFERWINDOWPOS
         // 0104 - DEFERWINDOWPOS
         // 0105 - ENDDEFERWINDOWPOS
@@ -2874,12 +2877,17 @@ namespace Win3muCore
         // 01FE - WNETLOCKQUEUEDATA
         // 01FF - WNETUNLOCKQUEUEDATA
         // 0200 - WNETGETCONNECTION
+        [EntryPoint(0x0200)]
+        public ushort WNetGetConnection(string lpLocalName, string lpRemoteName, uint lpnLength)
+        {
+            return 0;
+        }
         // 0201 - WNETGETCAPS
         [EntryPoint(0x0201)]
-        public ushort WNetGetCaps16(ushort capability)
+        public ushort WNETGETCAPS(ushort arg)
         {
-            // Hack for now
-            return 0;
+            // WNNC_NET_Multinet | WNNC_SUBNET_WinWorkgroups
+            return 0x8004;
         }
         // 0202 - WNETDEVICEMODE
         // 0203 - WNETBROWSEDIALOG
@@ -2893,8 +2901,23 @@ namespace Win3muCore
         // 020B - WNETRESTORECONNECTION
         // 020C - WNETWRITEJOB
         // 020D - WNETCONNECTDIALOG
+        [EntryPoint(0x020D)]
+        public void WNETCONNECTDIALOG()
+        {
+            return;
+        }
         // 020E - WNETDISCONNECTDIALOG
+        [EntryPoint(0x020E)]
+        public void WNETDISCONNECTDIALOG()
+        {
+            return;
+        }
         // 020F - WNETCONNECTIONDIALOG
+        [EntryPoint(0x020F)]
+        public void WNETCONNECTIONDIALOG()
+        {
+            return;
+        }
         // 0210 - WNETVIEWQUEUEDIALOG
         // 0211 - WNETPROPERTYDIALOG
         // 0212 - WNETGETDIRECTORYTYPE
