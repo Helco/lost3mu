@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharp86", "Sharp86\Sharp86\Sharp86.csproj", "{B7B582A0-CED8-497B-A9B8-EF152326C713}"
 EndProject
@@ -57,9 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetaJson", "Sharp86\PetaJso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConFrames", "Sharp86\ConFrames\ConFrames\ConFrames.csproj", "{64905DDF-9D01-4A63-BD60-A2586008CEE2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sharp86\Sharp86", "Sharp86\Sharp86", "{C5F0727E-B327-4A3D-8911-735AC60D5D17}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sharp86", "Sharp86", "{0062640A-4104-4D3B-AE13-F596903034EA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sharp86_", "Sharp86_", "{0062640A-4104-4D3B-AE13-F596903034EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConDos", "Sharp86\ConDos\ConDos.csproj", "{D1D82BB6-4291-4D44-B196-31757CF41506}"
 EndProject
@@ -258,13 +256,17 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Sharp86.vsmdi
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B7B582A0-CED8-497B-A9B8-EF152326C713} = {C5F0727E-B327-4A3D-8911-735AC60D5D17}
-		{D1D82BB6-4291-4D44-B196-31757CF41506} = {0062640A-4104-4D3B-AE13-F596903034EA}
+		{B7B582A0-CED8-497B-A9B8-EF152326C713} = {0062640A-4104-4D3B-AE13-F596903034EA}
+		{460777C5-52D2-4680-945C-037026022C02} = {0062640A-4104-4D3B-AE13-F596903034EA}
+		{5DD0E722-C0F7-46C4-8FC4-13F56D881A75} = {0062640A-4104-4D3B-AE13-F596903034EA}
 		{4FCF88A9-301B-4763-BF9D-E63A3783249E} = {0062640A-4104-4D3B-AE13-F596903034EA}
 		{3AE7A67B-557F-4834-BF1C-A8E23BA116FE} = {0062640A-4104-4D3B-AE13-F596903034EA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EE8CC1B0-4FAD-401B-A15B-8441E312B8F5}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Sharp86.vsmdi
 	EndGlobalSection
 EndGlobal

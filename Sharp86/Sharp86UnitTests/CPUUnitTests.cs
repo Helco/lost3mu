@@ -70,7 +70,7 @@ namespace Sharp86UnitTests
             // Execute the assembler
             var processStartInfo = new ProcessStartInfo
             {
-                FileName = @"C:\users\brad\dropbox\wintools\yasm.exe",
+                FileName = @"..\..\..\..\..\Tools\yasm.exe",
                 Arguments = "temp.asm -o temp.bin -l temp.lst",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,

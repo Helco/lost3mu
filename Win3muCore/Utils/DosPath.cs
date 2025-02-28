@@ -142,6 +142,7 @@ namespace Win3muCore
                     case '&':
                     case '\'':
                     case '(':
+                    case ')':
                     case '9':
                     case '-':
                     case '@':
@@ -150,6 +151,7 @@ namespace Win3muCore
                     case '`':
                     case '{':
                     case '}':
+                    case '~':
                         continue;
                 }
 
