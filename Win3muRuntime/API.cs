@@ -17,6 +17,7 @@ along with Win3mu.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Text;
 using Win3muCore;
 using Win3muCore.NeFile;
 
@@ -26,6 +27,7 @@ namespace Win3muRuntime
     {
         public static int Run(string program, string[] commandLine, int showWindow)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var machine = new Machine();
             return machine.RunProgram(program, commandLine, Win16.SW_SHOWNORMAL);
         }

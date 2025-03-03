@@ -98,6 +98,8 @@ namespace ConDos
     {
         static void Main(string[] args)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             // Create PC
             var pc = new PC();
 

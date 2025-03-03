@@ -16,3 +16,4 @@ ipch
 codesign_password.txt
 *.VC.db
 Win3muBuild
+**/launchSettings.json
