@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace Win3muCore
 {
-    public static class sprintf
+    public static class Sprintf
     {
         public class Token
         {

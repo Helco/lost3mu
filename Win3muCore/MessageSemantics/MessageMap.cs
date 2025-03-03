@@ -55,18 +55,18 @@ namespace Win3muCore.MessageSemantics
 
             // Pack and post?
             message16 = (ushort)message32;
-            if (message32 == packAndPost.WM_PACKANDPOST)
+            if (message32 == PackAndPost.WM_PACKANDPOST)
             {
-                return packAndPost.Instance;
+                return PackAndPost.Instance;
             }
 
             // Registered windows message?
             if (message32 >= Win32.WM_REGISTEREDBASE && message32 <= 0xFFFF)
             {
                 if (RegisteredWindowMessages.IsRegistered((ushort)message32))
-                    return copy.Instance;
+                    return Copy.Instance;
                 else
-                    return bypass.Instance;
+                    return Bypass.Instance;
             }
 
             // Get window class
@@ -104,7 +104,7 @@ namespace Win3muCore.MessageSemantics
             if (message16 >= Win32.WM_REGISTEREDBASE && message16 <= 0xFFFF)
             {
                 message32 = message16;
-                return copy.Instance;
+                return Copy.Instance;
             }
 
             // Get window class
@@ -128,7 +128,7 @@ namespace Win3muCore.MessageSemantics
 
             // Unknown message!
             message32 = message16;
-            return packAndPost.Instance;
+            return PackAndPost.Instance;
         }
 
         MessageLookup[] _wndClassKindMessages;
@@ -230,107 +230,107 @@ namespace Win3muCore.MessageSemantics
         void Load()
         {
             // Standard messages
-            Add(0x0000, new unused());             // WM_NULL
+            Add(0x0000, new Unused());             // WM_NULL
             Add(0x0001, new WM_NC_OR_CREATE(false));// WM_CREATE
             Add(0x0002, new WM_DESTROY());         // WM_DESTROY
-            Add(0x0003, new copy());               // WM_MOVE
-            Add(0x0005, new copy());               // WM_SIZE
+            Add(0x0003, new Copy());               // WM_MOVE
+            Add(0x0005, new Copy());               // WM_SIZE
             Add(0x0006, new WM_ACTIVATE());            // WM_ACTIVATE
-            Add(0x0007, new hwnd_copy());          // WM_SETFOCUS
-            Add(0x0008, new hwnd_copy());          // WM_KILLFOCUS
-            Add(0x000A, new copy_unused());        // WM_ENABLE
-            Add(0x000B, new copy_unused());        // WM_SETDRAW
+            Add(0x0007, new HWNDCopy());          // WM_SETFOCUS
+            Add(0x0008, new HWNDCopy());          // WM_KILLFOCUS
+            Add(0x000A, new CopyUnused());        // WM_ENABLE
+            Add(0x000B, new CopyUnused());        // WM_SETDRAW
             Add(0x000C, new WM_SETTEXT());         // WM_SETTEXT
             Add(0x000D, new WM_GETTEXT());         // WM_GETTEXT
-            Add(0x000E, new unused());             // WM_GETTEXTLENGTH
-            Add(0x000F, new unused());             // WM_PAINT
-            Add(0x0010, new unused());             // WM_CLOSE
-            Add(0x0012, new copy_unused());        // WM_QUIT
-            Add(0x0013, new unused());             // WM_NULL
-            Add(0x0014, new hdc_unused());         // WM_ERASEBKGND
-            Add(0x0018, new copy());               // WM_SHOWWINDOW
+            Add(0x000E, new Unused());             // WM_GETTEXTLENGTH
+            Add(0x000F, new Unused());             // WM_PAINT
+            Add(0x0010, new Unused());             // WM_CLOSE
+            Add(0x0012, new CopyUnused());        // WM_QUIT
+            Add(0x0013, new Unused());             // WM_NULL
+            Add(0x0014, new HDCUnused());         // WM_ERASEBKGND
+            Add(0x0018, new Copy());               // WM_SHOWWINDOW
             Add(0x0019, new WM_CTLCOLOR());        // WM_CTLCOLOR
             Add(0x001A, new unused_string());      // WM_WININICHANGE
-            Add(0x001C, new copy_htask());         // WM_ACTIVATEAPP lParam is supposed to be task handle - hopefully DefWindowProce doesn't need it
-            Add(0x001E, new unused());             // WM_TIMECHANGE
-            Add(0x001F, new unused());             // WM_CANCELMODE
-            Add(0x0020, new hwnd_copy());          // WM_SETCURSOR
-            Add(0x0021, new hwnd_copy());          // WM_MOUSEACTIVATE
-            Add(0x0022, new unused());             // WM_CHILDACTIVATE
+            Add(0x001C, new CopyHTASK());         // WM_ACTIVATEAPP lParam is supposed to be task handle - hopefully DefWindowProce doesn't need it
+            Add(0x001E, new Unused());             // WM_TIMECHANGE
+            Add(0x001F, new Unused());             // WM_CANCELMODE
+            Add(0x0020, new HWNDCopy());          // WM_SETCURSOR
+            Add(0x0021, new HWNDCopy());          // WM_MOUSEACTIVATE
+            Add(0x0022, new Unused());             // WM_CHILDACTIVATE
             Add(0x0024, new WM_GETMINMAXINFO());   // WM_GETMINMAXINFO
             Add(0x002B, new WM_DRAWITEM());        // WM_DRAWITEM
             Add(0x002C, new WM_MEASUREITEM());     // WM_MEASUREITEM
             Add(0x002D, new WM_DELETEITEM());      // WM_DELETEITEM
-            Add(0x0030, new hgdiobj_copy());       // WM_SETFONT
+            Add(0x0030, new HGDIOBJCopy());       // WM_SETFONT
             Add(0x0031, new WM_GETFONT());         // WM_GETFONT
-            Add(0x003D, new bypass());             // WM_GETOBJECT
-            Add(0x0046, new bypass());             // WM_WINDOWPOSCHANGED
-            Add(0x0047, new bypass());             // WM_WINDOWPOSCHANGING
-            Add(0x0048, new copy());               // WM_POWER
-            Add(0x004D, new bypass());             // ??? (press F1 on checkers)
-            Add(0x0053, new bypass());             // WM_HELP
-            Add(0x0060, new bypass());             // ??
-            Add(0x007b, new bypass());             // WM_CONTEXTMENU
-            Add(0x007c, new bypass());             // WM_STYLECHANGING
-            Add(0x007d, new bypass());             // WM_STYLECHANGED
-            Add(0x007e, new bypass());             // WM_DISPLAYCHANGE
-            Add(0x007F, new bypass());             // WM_GETICON
+            Add(0x003D, new Bypass());             // WM_GETOBJECT
+            Add(0x0046, new Bypass());             // WM_WINDOWPOSCHANGED
+            Add(0x0047, new Bypass());             // WM_WINDOWPOSCHANGING
+            Add(0x0048, new Copy());               // WM_POWER
+            Add(0x004D, new Bypass());             // ??? (press F1 on checkers)
+            Add(0x0053, new Bypass());             // WM_HELP
+            Add(0x0060, new Bypass());             // ??
+            Add(0x007b, new Bypass());             // WM_CONTEXTMENU
+            Add(0x007c, new Bypass());             // WM_STYLECHANGING
+            Add(0x007d, new Bypass());             // WM_STYLECHANGED
+            Add(0x007e, new Bypass());             // WM_DISPLAYCHANGE
+            Add(0x007F, new Bypass());             // WM_GETICON
             Add(0x0081, new WM_NC_OR_CREATE(true));// WM_NCCREATE
             Add(0x0082, new WM_NCDESTROY());       // WM_NCDESTROY
             Add(0x0083, new WM_NCCALCSIZE());      // WM_NCCALCSIZE
-            Add(0x0084, new copy());               // WM_NCHITTEST
-            Add(0x0085, new hgdiobj_unused());     // WM_NCPAINT
-            Add(0x0086, new copy());               // WM_NCACTIVATE
-            Add(0x0087, new unused());             // WM_GETDLGCODE
-            Add(0x0088, new bypass());             // WM_SYNCPAINT
-            Add(0x0090, new bypass());             // ??
-            Add(0x0091, new bypass());             // ??
-            Add(0x0092, new bypass());             // ??
-            Add(0x0093, new bypass());             // ??
-            Add(0x0094, new bypass());             // ??
-            Add(0x00A0, new copy());               // WM_NCMOUSEMOVE
-            Add(0x00a1, new copy());               // WM_NCLBUTTONDOWN
-            Add(0x00a2, new copy());               // WM_NCLBUTTONUP
-            Add(0x00a3, new copy());               // WM_NCLBUTTONDBLCLK
-            Add(0x00a4, new copy());               // WM_NCRBUTTONDOWN
-            Add(0x00a5, new copy());               // WM_NCRBUTTONUP
-            Add(0x00a6, new copy());               // WM_NCRBUTTONDBLCLK
-            Add(0x00a7, new copy());               // WM_NCMBUTTONDOWN
-            Add(0x00a8, new copy());               // WM_NCMBUTTONUP
-            Add(0x00a9, new copy());               // WM_NCMBUTTONDBLCLK
-            Add(0x00ae, new bypass());             // ??
-            Add(0x00e0, new bypass());             // SBM_SETPOS
-            Add(0x00e1, new bypass());             // SBM_GETPOS
-            Add(0x00e2, new bypass());             // SBM_SETRANGE
-            Add(0x00e3, new bypass());             // SBM_GETRANGE
-            Add(0x00e4, new bypass());             // SBM_ENABLE_ARROWS
-            Add(0x00e6, new bypass());             // SBM_SETRANGEREDRAW
-            Add(0x00e9, new bypass());             // SBM_SETSCROLLINFO
-            Add(0x00ea, new bypass());             // SBM_GETSCROLLINFO
-            Add(0x00eb, new bypass());             // SBM_GETSCROLLBARINFO
-            Add(0x0100, new copy());               // WM_KEYDOWN
-            Add(0x0101, new copy());               // WM_KEYUP
-            Add(0x0102, new copy());               // WM_CHAR
-            Add(0x0104, new copy());               // WM_SYSKEYDOWN
-            Add(0x0105, new copy());               // WM_SYSKEYUP
-            Add(0x0106, new copy());               // WM_SYSCHAR
+            Add(0x0084, new Copy());               // WM_NCHITTEST
+            Add(0x0085, new HGDIOBJUnused());     // WM_NCPAINT
+            Add(0x0086, new Copy());               // WM_NCACTIVATE
+            Add(0x0087, new Unused());             // WM_GETDLGCODE
+            Add(0x0088, new Bypass());             // WM_SYNCPAINT
+            Add(0x0090, new Bypass());             // ??
+            Add(0x0091, new Bypass());             // ??
+            Add(0x0092, new Bypass());             // ??
+            Add(0x0093, new Bypass());             // ??
+            Add(0x0094, new Bypass());             // ??
+            Add(0x00A0, new Copy());               // WM_NCMOUSEMOVE
+            Add(0x00a1, new Copy());               // WM_NCLBUTTONDOWN
+            Add(0x00a2, new Copy());               // WM_NCLBUTTONUP
+            Add(0x00a3, new Copy());               // WM_NCLBUTTONDBLCLK
+            Add(0x00a4, new Copy());               // WM_NCRBUTTONDOWN
+            Add(0x00a5, new Copy());               // WM_NCRBUTTONUP
+            Add(0x00a6, new Copy());               // WM_NCRBUTTONDBLCLK
+            Add(0x00a7, new Copy());               // WM_NCMBUTTONDOWN
+            Add(0x00a8, new Copy());               // WM_NCMBUTTONUP
+            Add(0x00a9, new Copy());               // WM_NCMBUTTONDBLCLK
+            Add(0x00ae, new Bypass());             // ??
+            Add(0x00e0, new Bypass());             // SBM_SETPOS
+            Add(0x00e1, new Bypass());             // SBM_GETPOS
+            Add(0x00e2, new Bypass());             // SBM_SETRANGE
+            Add(0x00e3, new Bypass());             // SBM_GETRANGE
+            Add(0x00e4, new Bypass());             // SBM_ENABLE_ARROWS
+            Add(0x00e6, new Bypass());             // SBM_SETRANGEREDRAW
+            Add(0x00e9, new Bypass());             // SBM_SETSCROLLINFO
+            Add(0x00ea, new Bypass());             // SBM_GETSCROLLINFO
+            Add(0x00eb, new Bypass());             // SBM_GETSCROLLBARINFO
+            Add(0x0100, new Copy());               // WM_KEYDOWN
+            Add(0x0101, new Copy());               // WM_KEYUP
+            Add(0x0102, new Copy());               // WM_CHAR
+            Add(0x0104, new Copy());               // WM_SYSKEYDOWN
+            Add(0x0105, new Copy());               // WM_SYSKEYUP
+            Add(0x0106, new Copy());               // WM_SYSCHAR
             Add(0x0110, new WM_INITDIALOG());      // WM_INITDIALOG
             Add(0x0111, new WM_COMMAND());         // WM_COMMAND
-            Add(0x0112, new copy());               // WM_SYSCOMMAND
+            Add(0x0112, new Copy());               // WM_SYSCOMMAND
             Add(0x0113, new WM_TIMER());           // WM_TIMER
             Add(0x0114, new WM_XSCROLL());         // WM_HSCROLL
             Add(0x0115, new WM_XSCROLL());         // WM_VSCROLL
-            Add(0x0116, new hmenu_copy());         // WM_INITMENU
-            Add(0x0117, new hmenu_copy());         // WM_INITMENUPOPUP
-            Add(0x0118, new bypass());             // WM_SYSTIMER
+            Add(0x0116, new HMENUCopy());         // WM_INITMENU
+            Add(0x0117, new HMENUCopy());         // WM_INITMENUPOPUP
+            Add(0x0118, new Bypass());             // WM_SYSTIMER
             Add(0x011f, new WM_MENUSELECT());      // WM_MENUSELECT
             Add(0x0120, new WM_MENUCHAR());        // WM_MENUCHAR
-            Add(0x0127, new bypass());             // WM_CHANGEUISTATE
-            Add(0x0128, new bypass());             // WM_UPDATEUISTATE
-            Add(0x0129, new bypass());             // WM_QUERYUISTATE
-            Add(0x0121, new copy_hwnd());          // WM_ENTERIDLE
-            Add(0x0125, new bypass());             // WM_UNINITMENUPOPUP
-            Add(0x0131, new bypass());             // ???
+            Add(0x0127, new Bypass());             // WM_CHANGEUISTATE
+            Add(0x0128, new Bypass());             // WM_UPDATEUISTATE
+            Add(0x0129, new Bypass());             // WM_QUERYUISTATE
+            Add(0x0121, new CopyHWND());          // WM_ENTERIDLE
+            Add(0x0125, new Bypass());             // WM_UNINITMENUPOPUP
+            Add(0x0131, new Bypass());             // ???
             Add(0x0132, new WM_CTLCOLOR());        // WM_CTLCOLORMSGBOX
             Add(0x0133, new WM_CTLCOLOR());        // WM_CTLCOLOREDIT
             Add(0x0134, new WM_CTLCOLOR());        // WM_CTLCOLORLISTBOX
@@ -338,80 +338,80 @@ namespace Win3muCore.MessageSemantics
             Add(0x0136, new WM_CTLCOLOR());        // WM_CTLCOLORDLG
             Add(0x0137, new WM_CTLCOLOR());        // WM_CTLCOLORSCROLLBAR
             Add(0x0138, new WM_CTLCOLOR());        // WM_CTLCOLORSTATIC
-            Add(0x0200, new copy());               // WM_MOUSEMOVE
-            Add(0x0201, new copy());               // WM_LBUTTONDOWN
-            Add(0x0202, new copy());               // WM_LBUTTONUP
-            Add(0x0203, new copy());               // WM_LBUTTONDBLCLK
-            Add(0x0204, new copy());               // WM_RBUTTONDOWN
-            Add(0x0205, new copy());               // WM_RBUTTONUP
-            Add(0x0206, new copy());               // WM_RBUTTONDBLCLK
-            Add(0x0207, new copy());               // WM_MBUTTONDOWN
-            Add(0x0208, new copy());               // WM_MBUTTONUP
-            Add(0x0209, new copy());               // WM_MBUTTONDBLCLK
-            Add(0x020A, new bypass());             // WM_MOUSEWHEEL
+            Add(0x0200, new Copy());               // WM_MOUSEMOVE
+            Add(0x0201, new Copy());               // WM_LBUTTONDOWN
+            Add(0x0202, new Copy());               // WM_LBUTTONUP
+            Add(0x0203, new Copy());               // WM_LBUTTONDBLCLK
+            Add(0x0204, new Copy());               // WM_RBUTTONDOWN
+            Add(0x0205, new Copy());               // WM_RBUTTONUP
+            Add(0x0206, new Copy());               // WM_RBUTTONDBLCLK
+            Add(0x0207, new Copy());               // WM_MBUTTONDOWN
+            Add(0x0208, new Copy());               // WM_MBUTTONUP
+            Add(0x0209, new Copy());               // WM_MBUTTONDBLCLK
+            Add(0x020A, new Bypass());             // WM_MOUSEWHEEL
             Add(0x0210, new WM_PARENTNOTIFY());    // WM_PARENTNOTIFY
-            Add(0x0211, new bypass());             // WM_ENTERMENULOOP
-            Add(0x0212, new bypass());             // WM_EXITMENULOOP
+            Add(0x0211, new Bypass());             // WM_ENTERMENULOOP
+            Add(0x0212, new Bypass());             // WM_EXITMENULOOP
             Add(0x0213, new WM_NEXTMENU());        // WM_NEXTMENU
-            Add(0x0214, new bypass());             // WM_SIZING
-            Add(0x0215, new bypass());             // WM_CAPTURECHANGED
-            Add(0x0216, new bypass());             // WM_MOVING
-            Add(0x0218, new bypass());             // WM_POWERBROADCAST
-            Add(0x0219, new bypass());             // WM_DEVICECHANGE
-            Add(0x0231, new bypass());             // WM_ENTERSIZEMOVE
-            Add(0x0232, new bypass());             // WM_EXITSIZEMOVE
-            Add(0x0281, new bypass());             // WM_IME_SETCONTEXT
-            Add(0x0282, new bypass());             // WM_IME_NOTIFY            
-            Add(0x02a2, new bypass());             // WM_NCMOUSELEAVE
-            Add(0x02a3, new bypass());             // WM_MOUSELEAVE
-            Add(0x031e, new bypass());             // WM_DWMCOMPOSITIONCHANGED
-            Add(0x031f, new bypass());             // WM_DWMNCRENDERINGCHANGED   
-            Add(0x0317, new bypass());             // WM_PRINT
-            Add(0x0318, new bypass());             // WM_PRINTCLIENT
-            Add(0x0320, new bypass());             // WM_DWMCOLORIZATIONCOLORCHANGED   
-            Add(0x0321, new bypass());             // WM_DWMWINDOWMAXIMIZEDCHANGE   
-            Add(0x0323, new bypass());             // WM_DWMSENDICONICTHUMBNAIL   
-            Add(0x0326, new bypass());             // WM_DWMSENDICONICLIVEPREVIEWBITMAP   
-            Add(0x03B9, new copy());               // MM_MCINOTIFY
+            Add(0x0214, new Bypass());             // WM_SIZING
+            Add(0x0215, new Bypass());             // WM_CAPTURECHANGED
+            Add(0x0216, new Bypass());             // WM_MOVING
+            Add(0x0218, new Bypass());             // WM_POWERBROADCAST
+            Add(0x0219, new Bypass());             // WM_DEVICECHANGE
+            Add(0x0231, new Bypass());             // WM_ENTERSIZEMOVE
+            Add(0x0232, new Bypass());             // WM_EXITSIZEMOVE
+            Add(0x0281, new Bypass());             // WM_IME_SETCONTEXT
+            Add(0x0282, new Bypass());             // WM_IME_NOTIFY            
+            Add(0x02a2, new Bypass());             // WM_NCMOUSELEAVE
+            Add(0x02a3, new Bypass());             // WM_MOUSELEAVE
+            Add(0x031e, new Bypass());             // WM_DWMCOMPOSITIONCHANGED
+            Add(0x031f, new Bypass());             // WM_DWMNCRENDERINGCHANGED   
+            Add(0x0317, new Bypass());             // WM_PRINT
+            Add(0x0318, new Bypass());             // WM_PRINTCLIENT
+            Add(0x0320, new Bypass());             // WM_DWMCOLORIZATIONCOLORCHANGED   
+            Add(0x0321, new Bypass());             // WM_DWMWINDOWMAXIMIZEDCHANGE   
+            Add(0x0323, new Bypass());             // WM_DWMSENDICONICTHUMBNAIL   
+            Add(0x0326, new Bypass());             // WM_DWMSENDICONICLIVEPREVIEWBITMAP   
+            Add(0x03B9, new Copy());               // MM_MCINOTIFY
 
-            Add(0x0737, new bypass());             // ??
-            Add(0x0738, new bypass());             // ??
+            Add(0x0737, new Bypass());             // ??
+            Add(0x0738, new Bypass());             // ??
 
             // Dialog
-            Add(WndClassKind.Dialog, 0x0400, new copy());      // DM_GETDEFID
-            Add(WndClassKind.Dialog, 0x0401, new copy());      // DM_SETDEFID
+            Add(WndClassKind.Dialog, 0x0400, new Copy());      // DM_GETDEFID
+            Add(WndClassKind.Dialog, 0x0401, new Copy());      // DM_SETDEFID
 
             // Button
-            Add(WndClassKind.Button, Win32.BM_GETCHECK, Win16.BM_GETCHECK, new unused());
-            Add(WndClassKind.Button, Win32.BM_SETCHECK, Win16.BM_SETCHECK, new copy_unused());
-            Add(WndClassKind.Button, Win32.BM_SETSTATE, Win16.BM_SETSTATE, new copy_unused());
-            Add(WndClassKind.Button, Win32.BM_SETSTYLE, Win16.BM_SETSTYLE, new copy());
+            Add(WndClassKind.Button, Win32.BM_GETCHECK, Win16.BM_GETCHECK, new Unused());
+            Add(WndClassKind.Button, Win32.BM_SETCHECK, Win16.BM_SETCHECK, new CopyUnused());
+            Add(WndClassKind.Button, Win32.BM_SETSTATE, Win16.BM_SETSTATE, new CopyUnused());
+            Add(WndClassKind.Button, Win32.BM_SETSTYLE, Win16.BM_SETSTYLE, new Copy());
 
             // Edit
-            Add(WndClassKind.Edit, Win32.EM_SETSEL, Win16.EM_SETSEL, new cracked_lparam16());
-            Add(WndClassKind.Edit, Win32.EM_SETLIMITTEXT, Win16.EM_LIMITTEXT, new copy());
+            Add(WndClassKind.Edit, Win32.EM_SETSEL, Win16.EM_SETSEL, new CrackedLParam16());
+            Add(WndClassKind.Edit, Win32.EM_SETLIMITTEXT, Win16.EM_LIMITTEXT, new Copy());
 
             // Listbox
             Add(WndClassKind.Listbox, Win32.LB_ADDSTRING, Win16.LB_ADDSTRING, new ClassListBox.LB_ADDSTRING());
             Add(WndClassKind.Listbox, Win32.LB_INSERTSTRING, Win16.LB_INSERTSTRING, new ClassListBox.LB_ADDSTRING());
-            Add(WndClassKind.Listbox, Win32.LB_SETCURSEL, Win16.LB_SETCURSEL, new copy_unused());
-            Add(WndClassKind.Listbox, Win32.LB_GETCURSEL, Win16.LB_GETCURSEL, new unused());
-            Add(WndClassKind.Listbox, Win32.LB_GETCARETINDEX, Win16.LB_GETCARETINDEX, new unused());
+            Add(WndClassKind.Listbox, Win32.LB_SETCURSEL, Win16.LB_SETCURSEL, new CopyUnused());
+            Add(WndClassKind.Listbox, Win32.LB_GETCURSEL, Win16.LB_GETCURSEL, new Unused());
+            Add(WndClassKind.Listbox, Win32.LB_GETCARETINDEX, Win16.LB_GETCARETINDEX, new Unused());
             Add(WndClassKind.Listbox, Win32.LB_FINDSTRING, Win16.LB_FINDSTRING, new copy_string());
-            Add(WndClassKind.Listbox, Win32.LB_RESETCONTENT, Win16.LB_RESETCONTENT, new unused());
+            Add(WndClassKind.Listbox, Win32.LB_RESETCONTENT, Win16.LB_RESETCONTENT, new Unused());
             Add(WndClassKind.Listbox, Win32.LB_GETTEXT, Win16.LB_GETTEXT, new copy_outstring());
-            Add(WndClassKind.Listbox, Win32.LB_SETTOPINDEX, Win16.LB_SETTOPINDEX, new copy_unused());
-            Add(WndClassKind.Listbox, Win32.LB_GETTOPINDEX, Win16.LB_GETTOPINDEX, new unused());
+            Add(WndClassKind.Listbox, Win32.LB_SETTOPINDEX, Win16.LB_SETTOPINDEX, new CopyUnused());
+            Add(WndClassKind.Listbox, Win32.LB_GETTOPINDEX, Win16.LB_GETTOPINDEX, new Unused());
 
             // ComboBox
             Add(WndClassKind.Combobox, Win32.CB_ADDSTRING, Win16.CB_ADDSTRING, new ClassComboBox.CB_ADDSTRING());
             Add(WndClassKind.Combobox, Win32.CB_INSERTSTRING, Win16.CB_INSERTSTRING, new ClassComboBox.CB_ADDSTRING());
-            Add(WndClassKind.Combobox, Win32.CB_SETCURSEL, Win16.CB_SETCURSEL, new copy_unused());
-            Add(WndClassKind.Combobox, Win32.CB_GETCURSEL, Win16.CB_GETCURSEL, new unused());
-            Add(WndClassKind.Combobox, Win32.CB_SETITEMDATA, Win16.CB_SETITEMDATA, new copy());
-            Add(WndClassKind.Combobox, Win32.CB_GETITEMDATA, Win16.CB_GETITEMDATA, new copy());
-            Add(WndClassKind.Combobox, Win32.CB_RESETCONTENT, Win16.CB_RESETCONTENT, new unused());
-            Add(WndClassKind.Combobox, Win32.CB_GETCOUNT, Win16.CB_GETCOUNT, new unused());
+            Add(WndClassKind.Combobox, Win32.CB_SETCURSEL, Win16.CB_SETCURSEL, new CopyUnused());
+            Add(WndClassKind.Combobox, Win32.CB_GETCURSEL, Win16.CB_GETCURSEL, new Unused());
+            Add(WndClassKind.Combobox, Win32.CB_SETITEMDATA, Win16.CB_SETITEMDATA, new Copy());
+            Add(WndClassKind.Combobox, Win32.CB_GETITEMDATA, Win16.CB_GETITEMDATA, new Copy());
+            Add(WndClassKind.Combobox, Win32.CB_RESETCONTENT, Win16.CB_RESETCONTENT, new Unused());
+            Add(WndClassKind.Combobox, Win32.CB_GETCOUNT, Win16.CB_GETCOUNT, new Unused());
             Add(WndClassKind.Combobox, Win32.CB_GETLBTEXT, Win16.CB_GETLBTEXT, new copy_outstring());
             Add(WndClassKind.Combobox, Win32.CB_FINDSTRING, Win16.CB_FINDSTRING, new copy_string());
 

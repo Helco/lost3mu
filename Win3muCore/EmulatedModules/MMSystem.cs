@@ -109,7 +109,7 @@ namespace Win3muCore
 
         [EntryPoint(0x00c9)]
         [DllImport("winmm.dll")]
-        public static extern nuint midiOutGetNumDevs();
+        public static extern WinUInt midiOutGetNumDevs();
 
         // 00CA - MIDIOUTGETDEVCAPS - 00CA
         // 00CB - MIDIOUTGETERRORTEXT - 00CB
@@ -147,7 +147,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0191)]
         [DllImport("winmm.dll")]
-        public static extern nuint waveOutGetNumDevs();
+        public static extern WinUInt waveOutGetNumDevs();
 
         // 0192 - WAVEOUTGETDEVCAPS - 0192
         // 0193 - WAVEOUTGETERRORTEXT - 0193
@@ -334,7 +334,7 @@ namespace Win3muCore
         // 02C1 - MCILOADCOMMANDRESOURCE - 02C1
 
         [EntryPoint(0x02c2)]
-        public bool mciGetErrorString(uint error, uint buffer, nuint length)
+        public bool mciGetErrorString(uint error, uint buffer, WinUInt length)
         {
             throw new NotImplementedException("mciGetErrorString");
         }

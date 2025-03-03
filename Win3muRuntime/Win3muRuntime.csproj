@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyTitle>Win3mu Runtime</AssemblyTitle>
     <Description>Windows 3 Emulator</Description>
     <Company>Topten Software</Company>
@@ -20,11 +19,6 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\version.cs">
-      <Link>Properties\version.cs</Link>
-    </Compile>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sharp86\Sharp86\Sharp86.csproj" />
     <ProjectReference Include="..\Win3muCore\Win3muCore.csproj" />

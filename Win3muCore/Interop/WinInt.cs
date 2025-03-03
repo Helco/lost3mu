@@ -28,31 +28,31 @@ namespace Win3muCore
     /// <summary>
     /// For uint
     /// </summary>
-    public struct nint : IFormattable
+    public struct WinInt : IFormattable
     {
-        public nint(int value)
+        public WinInt(int value)
         {
             this.value = value;
         }
 
         public int value;
 
-        public static nint To32(short value)
+        public static WinInt To32(short value)
         {
-            return new nint(value);
+            return new WinInt(value);
         }
 
-        public static short To16(nint value)
+        public static short To16(WinInt value)
         {
             return (short)value.value;
         }
 
-        public static implicit operator nint(int value)
+        public static implicit operator WinInt(int value)
         {
-            return new nint(value);
+            return new WinInt(value);
         }
 
-        public static implicit operator int(nint value)
+        public static implicit operator int(WinInt value)
         {
             return value.value;
         }

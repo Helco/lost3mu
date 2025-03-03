@@ -35,15 +35,15 @@ namespace Win3muCore
 
         [EntryPoint(0x0002)]
         [DllImport("gdi32.dll")]
-        public static extern nint SetBkMode(HDC hDC, nint mode);
+        public static extern WinInt SetBkMode(HDC hDC, WinInt mode);
 
         [EntryPoint(0x0003)]
         [DllImport("gdi32.dll")]
-        public static extern nint SetMapMode(HDC hDC, nint mode);
+        public static extern WinInt SetMapMode(HDC hDC, WinInt mode);
 
         [EntryPoint(0x0004)]
         [DllImport("gdi32.dll")]
-        public static extern nint SetROP2(HDC hDC, nint mode);
+        public static extern WinInt SetROP2(HDC hDC, WinInt mode);
 
 
         // 0005 - SETRELABS
@@ -51,7 +51,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0007)]
         [DllImport("gdi32.dll")]
-        public static extern nint SetStretchBltMode(HDC hDC, nint mode);
+        public static extern WinInt SetStretchBltMode(HDC hDC, WinInt mode);
 
         // 0008 - SETTEXTCHARACTEREXTRA
 
@@ -90,7 +90,7 @@ namespace Win3muCore
         public static extern bool SetViewportOrgEx(HDC hDC, int x, int y, out Win32.POINT pptOld);
 
         [EntryPoint(0x000d)]
-        public uint SetViewportOrg(HDC hDC, nint x, nint y)
+        public uint SetViewportOrg(HDC hDC, WinInt x, WinInt y)
         {
             Win32.POINT old32;
             if (!SetViewportOrgEx(hDC, x, y, out old32))
@@ -120,59 +120,59 @@ namespace Win3muCore
 
         [EntryPoint(0x0013)]
         [DllImport("gdi32.dll")]
-        public static extern bool LineTo(HDC hDC, nint x, nint y);
+        public static extern bool LineTo(HDC hDC, WinInt x, WinInt y);
 
         [DllImport("gdi32.dll")]
         public static extern bool MoveToEx(HDC hDC, int x, int y, IntPtr pptOld);
 
         [EntryPoint(0x0014)]
-        public bool MoveTo(HDC hDC, nint x, nint y)
+        public bool MoveTo(HDC hDC, WinInt x, WinInt y)
         {
             return MoveToEx(hDC, x, y, IntPtr.Zero);
         }
 
         [EntryPoint(0x0015)]
         [DllImport("gdi32.dll")]
-        public static extern bool ExcludeClipRect(HDC hDC, nint left, nint top, nint right, nint bottom);
+        public static extern bool ExcludeClipRect(HDC hDC, WinInt left, WinInt top, WinInt right, WinInt bottom);
 
         [EntryPoint(0x0016)]
         [DllImport("gdi32.dll")]
-        public static extern bool IntersectClipRect(HDC hDC, nint left, nint top, nint right, nint bottom);
+        public static extern bool IntersectClipRect(HDC hDC, WinInt left, WinInt top, WinInt right, WinInt bottom);
 
         [EntryPoint(0x0017)]
         [DllImport("gdi32.dll")]
-        public static extern bool Arc(HDC hDC, nint left, nint top, nint right, nint bottom, 
-                                                    nint xstart, nint ystart, nint xend, nint yend);
+        public static extern bool Arc(HDC hDC, WinInt left, WinInt top, WinInt right, WinInt bottom, 
+                                                    WinInt xstart, WinInt ystart, WinInt xend, WinInt yend);
 
         [EntryPoint(0x0018)]
         [DllImport("gdi32.dll")]
-        public static extern bool Ellipse(HDC hDC, nint left, nint top, nint right, nint bottom);
+        public static extern bool Ellipse(HDC hDC, WinInt left, WinInt top, WinInt right, WinInt bottom);
 
         [EntryPoint(0x0019)]
         [DllImport("gdi32.dll")]
-        public static extern bool FloodFill(HDC hDC, nint x, nint y, uint colorRef);
+        public static extern bool FloodFill(HDC hDC, WinInt x, WinInt y, uint colorRef);
 
         // 001A - PIE
 
         [EntryPoint(0x001b)]
         [DllImport("gdi32.dll")]
-        public static extern bool Rectangle(HDC hDC, nint l, nint t, nint r, nint b);
+        public static extern bool Rectangle(HDC hDC, WinInt l, WinInt t, WinInt r, WinInt b);
 
         [EntryPoint(0x001c)]
         [DllImport("gdi32.dll")]
-        public static extern bool RoundRect(HDC hDC, nint l, nint t, nint r, nint b, nint r1, nint r2);
+        public static extern bool RoundRect(HDC hDC, WinInt l, WinInt t, WinInt r, WinInt b, WinInt r1, WinInt r2);
 
         [EntryPoint(0x001d)]
         [DllImport("gdi32.dll")]
-        public static extern bool PatBlt(HDC hDC, nint l, nint t, nint r, nint b, uint rop);
+        public static extern bool PatBlt(HDC hDC, WinInt l, WinInt t, WinInt r, WinInt b, uint rop);
 
         [EntryPoint(0x001e)]
         [DllImport("gdi32.dll")]
-        public static extern nint SaveDC(HDC hDC);
+        public static extern WinInt SaveDC(HDC hDC);
 
         [EntryPoint(0x001f)]
         [DllImport("gdi32.dll")]
-        public static extern uint SetPixel(HDC hDC, nint x, nint y, uint color);
+        public static extern uint SetPixel(HDC hDC, WinInt x, WinInt y, uint color);
 
         // 0020 - OFFSETCLIPRGN
 
@@ -186,7 +186,7 @@ namespace Win3muCore
         public static extern bool GdiFlush();
 
         [EntryPoint(0x0021)]
-        public bool TextOut(HDC hDC, nint x, nint y, uint pszString, nint cbString)
+        public bool TextOut(HDC hDC, WinInt x, WinInt y, uint pszString, WinInt cbString)
         {
             var str = _machine.GlobalHeap.ReadCharacters(pszString, cbString);
 
@@ -203,17 +203,17 @@ namespace Win3muCore
 
         [EntryPoint(0x0022)]
         [DllImport("gdi32.dll")]
-        public static extern bool BitBlt(HDC hDC, nint x, nint y, nint width, nint height, HDC hdcSrc, nint x2, nint y2, uint rop);
+        public static extern bool BitBlt(HDC hDC, WinInt x, WinInt y, WinInt width, WinInt height, HDC hdcSrc, WinInt x2, WinInt y2, uint rop);
 
         [EntryPoint(0x0023)]
         [DllImport("gdi32.dll")]
-        public static extern bool StretchBlt(HDC hDC, nint x, nint y, nint width, nint height, HDC hdcSrc, nint x2, nint y2, nint width2, nint height2, uint rop);
+        public static extern bool StretchBlt(HDC hDC, WinInt x, WinInt y, WinInt width, WinInt height, HDC hdcSrc, WinInt x2, WinInt y2, WinInt width2, WinInt height2, uint rop);
 
         [DllImport("gdi32.dll")]
         static extern bool Polygon(HDC hdc, Win32.POINT[] lpPoints, int nCount);
 
         [EntryPoint(0x0024)]
-        public bool Polygon(HDC hDC, uint ppts, nint nCount)
+        public bool Polygon(HDC hDC, uint ppts, WinInt nCount)
         {
             var pts = new Win32.POINT[nCount];
             for (int i = 0; i < nCount; i++)
@@ -228,7 +228,7 @@ namespace Win3muCore
         static extern bool Polyline(HDC hdc, Win32.POINT[] lpPoints, int nCount);
 
         [EntryPoint(0x0025)]
-        public bool Polyline(HDC hDC, uint ppts, nint nCount)
+        public bool Polyline(HDC hDC, uint ppts, WinInt nCount)
         {
             var pts = new Win32.POINT[nCount];
             for (int i = 0; i < nCount; i++)
@@ -243,7 +243,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0027)]
         [DllImport("gdi32.dll")]
-        public static extern bool RestoreDC(HDC hDC, nint nSavedDC);
+        public static extern bool RestoreDC(HDC hDC, WinInt nSavedDC);
 
         [EntryPoint(0x0028)]                   
         [DllImport("gdi32.dll")]
@@ -251,7 +251,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0029)]
         [DllImport("gdi32.dll")]
-        public static extern bool FrameRgn(HDC hDC, HGDIOBJ hRgn, nint w, nint h);
+        public static extern bool FrameRgn(HDC hDC, HGDIOBJ hRgn, WinInt w, WinInt h);
 
         [EntryPoint(0x002a)]
         [DllImport("gdi32.dll")]
@@ -263,7 +263,7 @@ namespace Win3muCore
 
         [EntryPoint(0x002c)]
         [DllImport("gdi32.dll")]
-        public static extern nint SelectClipRgn(HDC hDC, HGDIOBJ hRgn);
+        public static extern WinInt SelectClipRgn(HDC hDC, HGDIOBJ hRgn);
 
         [EntryPoint(0x002d)]
         [DllImport("gdi32.dll", ExactSpelling = true, PreserveSig = true, SetLastError = true)]
@@ -271,13 +271,13 @@ namespace Win3muCore
 
         [EntryPoint(0x002f)]
         [DllImport("gdi32.dll")]
-        public static extern nint CombineRgn(HGDIOBJ hrgnDest, HGDIOBJ hrgnSrc1, HGDIOBJ hrgnSrc2, nint combineMode);
+        public static extern WinInt CombineRgn(HGDIOBJ hrgnDest, HGDIOBJ hrgnSrc1, HGDIOBJ hrgnSrc2, WinInt combineMode);
 
         [DllImport("gdi32.dll")]
         static extern IntPtr CreateBitmap(int nWidth, int nHeight, uint cPlanes, uint cBitsPerPel, IntPtr lpvBits);
 
         [EntryPoint(0x0030)]
-        public HGDIOBJ CreateBitmap(nint width, nint height, nuint planes, nuint bitcount, uint ptrBits)
+        public HGDIOBJ CreateBitmap(WinInt width, WinInt height, WinUInt planes, WinUInt bitcount, uint ptrBits)
         {
             using (var hp = _machine.GlobalHeap.GetHeapPointer(ptrBits, false))
             {
@@ -307,7 +307,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0033)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ CreateCompatibleBitmap(HDC hDC, nint width, nint height);
+        public static extern HGDIOBJ CreateCompatibleBitmap(HDC hDC, WinInt width, WinInt height);
 
         [EntryPoint(0x0034)]
         [DllImport("gdi32.dll")]
@@ -326,7 +326,7 @@ namespace Win3muCore
             uint fdwPitchAndFamily, string faceName);
 
         [EntryPoint(0x0038)]
-        public HGDIOBJ CreateFont(nint nHeight, nint nWidth, nint nEscapement, nint nOrientation, nint fnWeight,
+        public HGDIOBJ CreateFont(WinInt nHeight, WinInt nWidth, WinInt nEscapement, WinInt nOrientation, WinInt fnWeight,
             byte fdwItalic, byte fdwUnderline, byte fdwStrikeOut, byte fdwCharSet, byte fdwOutputPrecision, byte fdwClipPrecision, byte fdwQuality,
             byte fdwPitchAndFamily, string faceName)
         {
@@ -341,7 +341,7 @@ namespace Win3muCore
 
         [EntryPoint(0x003A)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ CreateHatchBrush(nint style, uint colorRef);
+        public static extern HGDIOBJ CreateHatchBrush(WinInt style, uint colorRef);
 
         [EntryPoint(0x003C)]
         [DllImport("gdi32.dll")]
@@ -349,7 +349,7 @@ namespace Win3muCore
 
         [EntryPoint(0x003d)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ CreatePen(nint penStyle, nint width, uint colorRef);
+        public static extern HGDIOBJ CreatePen(WinInt penStyle, WinInt width, uint colorRef);
 
         [EntryPoint(0x003e)]
         [DllImport("gdi32.dll")]
@@ -359,7 +359,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0040)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ CreateRectRgn(nint left, nint top, nint right, nint bottom);
+        public static extern HGDIOBJ CreateRectRgn(WinInt left, WinInt top, WinInt right, WinInt bottom);
 
         // 0041 - CREATERECTRGNINDIRECT
 
@@ -371,7 +371,7 @@ namespace Win3muCore
         static extern bool DPtoLP(IntPtr hdc, [In, Out] Win32.POINT[] lpPoints, int nCount);
 
         [EntryPoint(0x0043)]
-        public bool DPtoLP(HDC hDC, uint ppts, nint nCount)
+        public bool DPtoLP(HDC hDC, uint ppts, WinInt nCount)
         {
             // Convert to 32
             var pts = new Win32.POINT[nCount];
@@ -407,7 +407,7 @@ namespace Win3muCore
         public static extern int EnumFonts(IntPtr hDC, string faceName, EnumFontsDelegate enumProc, IntPtr lParam);
 
         [EntryPoint(0x0046)]
-        public nint EnumFonts(HDC hDC, string name, uint enumProc, uint lParam)
+        public WinInt EnumFonts(HDC hDC, string name, uint enumProc, uint lParam)
         {
             return EnumFonts(hDC.value, name, (pLogFont, pTextMetric, dwType, lp) =>
             {
@@ -454,11 +454,11 @@ namespace Win3muCore
 
         [EntryPoint(0x004c)]
         [DllImport("gdi32.dll")]
-        public static extern nint GetBkMode(HDC hDC);
+        public static extern WinInt GetBkMode(HDC hDC);
 
         [EntryPoint(0x004d)]
         [DllImport("gdi32.dll")]
-        public static extern nint GetClipBox(HDC hDC, out Win32.RECT rc);
+        public static extern WinInt GetClipBox(HDC hDC, out Win32.RECT rc);
 
         [DllImport("gdi32.dll")]
         public static extern bool GetCurrentPositionEx(HDC hdc, out Win32.POINT lpPoint);
@@ -483,10 +483,10 @@ namespace Win3muCore
         }
 
         [DllImport("gdi32.dll", EntryPoint = "GetDeviceCaps")]
-        public static extern nint _GetDeviceCaps(HDC hDC, nint cap);
+        public static extern WinInt _GetDeviceCaps(HDC hDC, WinInt cap);
 
         [EntryPoint(0x0050)]
-        public nint GetDeviceCaps(ushort hDC, nint cap)
+        public WinInt GetDeviceCaps(ushort hDC, WinInt cap)
         {
             // Tested on WinXP with 16, 24 and 32-bit color all return
             // 2048 for num colors on 16-bit windows
@@ -502,7 +502,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0051)]
         [DllImport("gdi32.dll")]
-        public static extern nint GetMapMode(HDC hDC);
+        public static extern WinInt GetMapMode(HDC hDC);
 
         [DllImport("gdi32.dll")]
         static extern uint GetObjectType(HGDIOBJ h);
@@ -608,23 +608,23 @@ namespace Win3muCore
 
         [EntryPoint(0x0053)]
         [DllImport("gdi32.dll")]
-        public static extern uint GetPixel(HDC hDC, nint x, nint y);
+        public static extern uint GetPixel(HDC hDC, WinInt x, WinInt y);
 
         // 0054 - GETPOLYFILLMODE
 
         [EntryPoint(0x0055)]
         [DllImport("gdi32.dll")]
-        public static extern nint GetROP2(HDC hDC);
+        public static extern WinInt GetROP2(HDC hDC);
 
         // 0056 - GETRELABS
 
         [EntryPoint(0x0057)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ GetStockObject(nint Object);
+        public static extern HGDIOBJ GetStockObject(WinInt Object);
 
         [EntryPoint(0x0058)]
         [DllImport("gdi32.dll")]
-        public static extern nint GetStretchBltMode(HDC hDC);
+        public static extern WinInt GetStretchBltMode(HDC hDC);
 
         // 0059 - GETTEXTCHARACTEREXTRA
 
@@ -664,7 +664,7 @@ namespace Win3muCore
         static extern bool LPtoDP(IntPtr hdc, [In, Out] Win32.POINT[] lpPoints, int nCount);
 
         [EntryPoint(0x0063)]
-        public bool LPtoDP(HDC hDC, uint ppts, nint nCount)
+        public bool LPtoDP(HDC hDC, uint ppts, WinInt nCount)
         {
             // Convert to 32
             var pts = new Win32.POINT[nCount];
@@ -692,7 +692,7 @@ namespace Win3muCore
         public static extern bool LineDDA(int x1, int y1, int x2, int y2, LINEDDAPROC callback, IntPtr lParam);
 
         [EntryPoint(0x0064)]
-        public bool LineDDA(nint x1, nint y1, nint x2, nint y2, uint callback, uint lParam)
+        public bool LineDDA(WinInt x1, WinInt y1, WinInt x2, WinInt y2, uint callback, uint lParam)
         {
             return LineDDA(x1, y1, x2, y2, (x, y, data) =>
             {
@@ -708,7 +708,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0067)]
         [DllImport("gdi32.dll")]
-        public static extern bool PtVisible(HDC hDC, nint x, nint y);
+        public static extern bool PtVisible(HDC hDC, WinInt x, WinInt y);
 
         [EntryPoint(0x0068)]
         [DllImport("gdi32.dll")]
@@ -752,7 +752,7 @@ namespace Win3muCore
         public static extern bool SetBrushOrgEx(HDC hDC, int x, int y, out Win32.POINT pptOld);
 
         [EntryPoint(0x0094)]
-        public uint SetBrushOrg(HDC hDC, nint x, nint y)
+        public uint SetBrushOrg(HDC hDC, WinInt x, WinInt y)
         {
             Win32.POINT old32;
             if (!SetBrushOrgEx(hDC, x, y, out old32))
@@ -782,7 +782,7 @@ namespace Win3muCore
 
         [EntryPoint(0x009c)]
         [DllImport("gdi32.dll")]
-        public static extern HGDIOBJ CreateDiscardableBitmap(HDC hDC, nint width, nint height);
+        public static extern HGDIOBJ CreateDiscardableBitmap(HDC hDC, WinInt width, WinInt height);
 
         // 009F - GETMETAFILEBITS
  
@@ -815,7 +815,7 @@ namespace Win3muCore
 
         [EntryPoint(0x00ac)]
         [DllImport("gdi32.dll")]
-        public static extern void SetRectRgn(HGDIOBJ hRgn, nint l, nint t, nint r, nint b);
+        public static extern void SetRectRgn(HGDIOBJ hRgn, WinInt l, WinInt t, WinInt r, WinInt b);
 
 
         // 00AD - GETCLIPRGN
@@ -886,11 +886,11 @@ namespace Win3muCore
 
         [EntryPoint(0x0159)]
         [DllImport("gdi32.dll")]
-        public static extern nuint GetTextAlign(HDC hDC);
+        public static extern WinUInt GetTextAlign(HDC hDC);
 
         [EntryPoint(0x015A)]
         [DllImport("gdi32.dll")]
-        public static extern nuint SetTextAlign(HDC hDC, nuint align);
+        public static extern WinUInt SetTextAlign(HDC hDC, WinUInt align);
 
         // 015C - CHORD
         // 015D - SETMAPPERFLAGS
@@ -900,7 +900,7 @@ namespace Win3muCore
         public static extern bool ExtTextOut(IntPtr hDC, int x, int y, uint fuOptions, IntPtr prc, string str, uint cch, IntPtr lpDX);
 
         [EntryPoint(0x015f)]
-        public bool ExtTextOut(HDC hDC, nint x, nint y, nuint fuOptions, uint prcRect, uint lpstr, nuint cch, uint lpDX)
+        public bool ExtTextOut(HDC hDC, WinInt x, WinInt y, WinUInt fuOptions, uint prcRect, uint lpstr, WinUInt cch, uint lpDX)
         {
             // Convert the rectangle
             Win32.RECT rc;
@@ -969,7 +969,7 @@ namespace Win3muCore
         public static extern uint _GetSystemPaletteEntries(HDC hDC, uint iStartIndex, uint nEntries, IntPtr ptr);
 
         [EntryPoint(0x0177)]
-        public nuint GetSystemPaletteEntries(HDC hDC, nuint iStartIndex, nuint nEntries, uint lppe)
+        public WinUInt GetSystemPaletteEntries(HDC hDC, WinUInt iStartIndex, WinUInt nEntries, uint lppe)
         {
             using (var hp = _machine.GlobalHeap.GetHeapPointer(lppe, true))
             {
@@ -1001,10 +1001,10 @@ namespace Win3muCore
                IntPtr pBits, IntPtr pBitsInfo, uint iUsage, uint rop);
 
         [EntryPoint(0x01b7)]
-        public nint StretchDIBits(HDC hdc,
-                    nint xDest, nint yDest, nint destWidth, nint destHeight,
-                    nint xSrc, nint ySrc, nint srcWidth, nint srcHeight,
-                    uint pBits, uint pBitsInfo, nuint iUsage, uint rop)
+        public WinInt StretchDIBits(HDC hdc,
+                    WinInt xDest, WinInt yDest, WinInt destWidth, WinInt destHeight,
+                    WinInt xSrc, WinInt ySrc, WinInt srcWidth, WinInt srcHeight,
+                    uint pBits, uint pBitsInfo, WinUInt iUsage, uint rop)
         {
             using (var hpBits = _machine.GlobalHeap.GetHeapPointer(pBits, false))
             using (var hpBitsInfo = _machine.GlobalHeap.GetHeapPointer(pBitsInfo, false))
@@ -1039,9 +1039,9 @@ namespace Win3muCore
                                                     IntPtr lpvBits, IntPtr lpbmi, uint fuColorUse);
 
         [EntryPoint(0x01bb)]
-        public nint SetDIBitsToDevice(HDC hDC, nint XDest, nint YDest, nuint dwWidth, nuint dwHeight,
-                                                    nint XSrc, nint YSrc, nuint uStartScan, nuint cScanLines,
-                                                    uint lpvbits, uint lpbmi, nuint fuColorUse)
+        public WinInt SetDIBitsToDevice(HDC hDC, WinInt XDest, WinInt YDest, WinUInt dwWidth, WinUInt dwHeight,
+                                                    WinInt XSrc, WinInt YSrc, WinUInt uStartScan, WinUInt cScanLines,
+                                                    uint lpvbits, uint lpbmi, WinUInt fuColorUse)
         {
             using (var hpvbits = _machine.GlobalHeap.GetHeapPointer(lpvbits, false))
             using (var hpbmi = _machine.GlobalHeap.GetHeapPointer(lpbmi, false))

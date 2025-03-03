@@ -31,7 +31,7 @@ namespace Win3muCore
     {
         [EntryPoint(0x0001)]
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern nint MessageBox(HWND hWnd, string text, string caption, nint options);
+        public static extern WinInt MessageBox(HWND hWnd, string text, string caption, WinInt options);
 
         // 0002 - OLDEXITWINDOWS
         // 0003 - ENABLEOEMLAYER
@@ -45,7 +45,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0006)]
         [DllImport("user32.dll")]
-        public static extern void PostQuitMessage(nint nExitCode);
+        public static extern void PostQuitMessage(WinInt nExitCode);
 
         // 0006 - POSTQUITMESSAGE
         // 0007 - EXITWINDOWS
@@ -238,7 +238,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0024)]
         [DllImport("user32.dll")]
-        public static extern int GetWindowText(HWND hWnd, [BufSize(+1)] [Out] StringBuilder sb, nint cch);
+        public static extern int GetWindowText(HWND hWnd, [BufSize(+1)] [Out] StringBuilder sb, WinInt cch);
 
         public static string GetWindowText(HWND hWnd)
         {
@@ -253,7 +253,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0026)]
         [DllImport("user32.dll")]
-        public static extern nint GetWindowTextLength(HWND hWnd);
+        public static extern WinInt GetWindowTextLength(HWND hWnd);
 
         [EntryPoint(0x0027)]
         [DllImport("user32.dll")]
@@ -311,7 +311,7 @@ namespace Win3muCore
         [EntryPoint(0x002A)]
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool ShowWindow(HWND hWnd, nint nCmdShow);
+        public static extern bool ShowWindow(HWND hWnd, WinInt nCmdShow);
 
         // 002A - SHOWWINDOW
         // 002B - CLOSEWINDOW
@@ -410,7 +410,7 @@ namespace Win3muCore
 
         [EntryPoint(0x003a)]
         [DllImport("user32.dll")]
-        public static extern int GetClassName(HWND hWnd, [BufSize(+1)] [Out] StringBuilder sb, nint cch);
+        public static extern int GetClassName(HWND hWnd, [BufSize(+1)] [Out] StringBuilder sb, WinInt cch);
 
         public static string GetClassName(HWND hWnd)
         {
@@ -428,10 +428,10 @@ namespace Win3muCore
         public static extern HWND GetActiveWindow();
 
         [DllImport("user32.dll")]
-        public static extern void ScrollWindow(HWND hWnd, nint dx, nint dy, IntPtr prcRect, IntPtr prcClip);
+        public static extern void ScrollWindow(HWND hWnd, WinInt dx, WinInt dy, IntPtr prcRect, IntPtr prcClip);
 
         [EntryPoint(0x003d)]
-        public void ScrollWindow(HWND hWnd, nint dx, nint dy, uint prcRect16, uint prcClip16)
+        public void ScrollWindow(HWND hWnd, WinInt dx, WinInt dy, uint prcRect16, uint prcClip16)
         {
             unsafe
             {
@@ -457,19 +457,19 @@ namespace Win3muCore
 
         [EntryPoint(0x003E)]
         [DllImport("user32.dll")]
-        public static extern void SetScrollPos(HWND hWnd, nint bar, nint pos, bool redraw);
+        public static extern void SetScrollPos(HWND hWnd, WinInt bar, WinInt pos, bool redraw);
 
         [EntryPoint(0x003F)]
         [DllImport("user32.dll")]
-        public static extern int GetScrollPos(HWND hWnd, nint bar);
+        public static extern int GetScrollPos(HWND hWnd, WinInt bar);
 
         [EntryPoint(0x0040)]
         [DllImport("user32.dll")]
-        public static extern void SetScrollRange(HWND hWnd, nint bar, nint min, nint max, bool redraw);
+        public static extern void SetScrollRange(HWND hWnd, WinInt bar, WinInt min, WinInt max, bool redraw);
 
         [EntryPoint(0x0041)]
         [DllImport("user32.dll")]
-        public static extern void GetScrollRange(HWND hWnd, nint bar, ref nint min, ref nint max);
+        public static extern void GetScrollRange(HWND hWnd, WinInt bar, ref WinInt min, ref WinInt max);
 
         [EntryPoint(0x0042)]
         [DllImport("user32.dll")]
@@ -498,15 +498,15 @@ namespace Win3muCore
 
         [EntryPoint(0x0046)]
         [DllImport("user32.dll")]
-        public static extern bool SetCursorPos(nint x, nint y);
+        public static extern bool SetCursorPos(WinInt x, WinInt y);
 
         [EntryPoint(0x0047)]
         [DllImport("user32.dll")]
-        public static extern nint ShowCursor(bool show);
+        public static extern WinInt ShowCursor(bool show);
 
         [EntryPoint(0x0048)]
         [DllImport("user32.dll")]
-        public static extern void SetRect(out Win32.RECT rc, nint l, nint t, nint r, nint b);
+        public static extern void SetRect(out Win32.RECT rc, WinInt l, WinInt t, WinInt r, WinInt b);
 
         [EntryPoint(0x0049)]
         [DllImport("user32.dll")]
@@ -526,11 +526,11 @@ namespace Win3muCore
 
         [EntryPoint(0x004d)]
         [DllImport("user32.dll")]
-        public static extern bool OffsetRect(ref Win32.RECT lprc, nint dx, nint dy);
+        public static extern bool OffsetRect(ref Win32.RECT lprc, WinInt dx, WinInt dy);
 
         [EntryPoint(0x004e)]
         [DllImport("user32.dll")]
-        public static extern bool InflateRect(ref Win32.RECT lprc, nint dx, nint dy);
+        public static extern bool InflateRect(ref Win32.RECT lprc, WinInt dx, WinInt dy);
 
         [EntryPoint(0x004f)]
         [DllImport("user32.dll")]
@@ -550,15 +550,15 @@ namespace Win3muCore
 
         [EntryPoint(0x0053)]
         [DllImport("user32.dll")]
-        public static extern nint FrameRect(HDC hDC, [In] ref Win32.RECT rc, HGDIOBJ hBrush);
+        public static extern WinInt FrameRect(HDC hDC, [In] ref Win32.RECT rc, HGDIOBJ hBrush);
 
         [EntryPoint(0x0054)]
         [DllImport("user32.dll")]
-        public static extern bool DrawIcon(HDC hDC, nint x, nint y, HGDIOBJ hIcon);
+        public static extern bool DrawIcon(HDC hDC, WinInt x, WinInt y, HGDIOBJ hIcon);
 
         [EntryPoint(0x0055)]
         [DllImport("user32.dll", EntryPoint = "DrawTextW")]
-        public static extern int DrawText(HDC hDC, [MarshalAs(UnmanagedType.LPWStr)] string lpString, nint nCount, ref Win32.RECT lpRect, nuint uFormat);
+        public static extern int DrawText(HDC hDC, [MarshalAs(UnmanagedType.LPWStr)] string lpString, WinInt nCount, ref Win32.RECT lpRect, WinUInt uFormat);
 
         // 0056 - BEAR86
         // 0057 - DIALOGBOX
@@ -571,7 +571,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0058)]
         [DllImport("user32.dll")]
-        public static extern void EndDialog(HWND hWnd, nint retv);
+        public static extern void EndDialog(HWND hWnd, WinInt retv);
 
         [EntryPoint(0x0059)]
         public HWND CreateDialog(ushort hModule, StringOrId template, HWND hWndParent, uint dlgProc)
@@ -594,11 +594,11 @@ namespace Win3muCore
 
         [EntryPoint(0x005b)]
         [DllImport("user32.dll")]
-        public static extern HWND GetDlgItem(HWND hWnd, nint id);
+        public static extern HWND GetDlgItem(HWND hWnd, WinInt id);
         
         [EntryPoint(0x005c)]
 //        [DllImport("user32.dll")]
-        public void SetDlgItemText(HWND hWnd, nint id, uint textOrHIcon)
+        public void SetDlgItemText(HWND hWnd, WinInt id, uint textOrHIcon)
         {
             HWND hWndChild = GetDlgItem(hWnd, id);
             SendMessage(HWND.To16(hWndChild), WinCommon.WM_SETTEXT, 0, textOrHIcon);
@@ -606,17 +606,17 @@ namespace Win3muCore
 
         [EntryPoint(0x005D)]
         [DllImport("user32.dll")]
-        public static extern int GetDlgItemText(HWND hWnd, nint id, [BufSize(+1)] [Out] StringBuilder sb, nint cch);
+        public static extern int GetDlgItemText(HWND hWnd, WinInt id, [BufSize(+1)] [Out] StringBuilder sb, WinInt cch);
 
         [EntryPoint(0x005E)]
         [DllImport("user32.dll")]
-        public static extern int SetDlgItemInt(HWND hWnd, nint id, nuint value, bool signed);
+        public static extern int SetDlgItemInt(HWND hWnd, WinInt id, WinUInt value, bool signed);
 
         [DllImport("user32.dll")]
         public static extern uint GetDlgItemInt(HWND hWnd, int id, out bool translated, bool signed);
 
         [EntryPoint(0x005F)]
-        public ushort GetDlgItemInt(HWND hWnd, nint id, out short translated, bool signed)
+        public ushort GetDlgItemInt(HWND hWnd, WinInt id, out short translated, bool signed)
         {
             bool bTemp;
             var retv = (ushort)GetDlgItemInt(hWnd, id, out bTemp, signed);
@@ -626,15 +626,15 @@ namespace Win3muCore
 
         [EntryPoint(0x0060)]
         [DllImport("user32.dll")]
-        public static extern bool CheckRadioButton(HWND hWnd, nint first, nint last, nint check);
+        public static extern bool CheckRadioButton(HWND hWnd, WinInt first, WinInt last, WinInt check);
 
         [EntryPoint(0x0061)]
         [DllImport("user32.dll")]
-        public static extern void CheckDlgButton(HWND hWnd, nint id, nuint check);
+        public static extern void CheckDlgButton(HWND hWnd, WinInt id, WinUInt check);
 
         [EntryPoint(0x0062)]
         [DllImport("user32.dll")]
-        public static extern nuint IsDlgButtonChecked(HWND hWnd, nint id);
+        public static extern WinUInt IsDlgButtonChecked(HWND hWnd, WinInt id);
 
         // 0063 - DLGDIRSELECT
 
@@ -787,7 +787,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0068)]
         [DllImport("user32.dll")]
-        public static extern void MessageBeep(nuint type);
+        public static extern void MessageBeep(WinUInt type);
 
         [EntryPoint(0x0069)]
         [DllImport("user32.dll")]
@@ -795,7 +795,7 @@ namespace Win3muCore
 
         [EntryPoint(0x006a)]
         [DllImport("user32.dll")]
-        public static extern nint GetKeyState(nint key);
+        public static extern WinInt GetKeyState(WinInt key);
 
         [DllImport("user32.dll", EntryPoint = "DefWindowProcW")]
         public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
@@ -952,7 +952,7 @@ namespace Win3muCore
         public static extern uint _RegisterWindowMessage(string name);
 
         [EntryPoint(0x0076)]
-        public nuint RegisterWindowMessage(string name)
+        public WinUInt RegisterWindowMessage(string name)
         {
             var retv = _RegisterWindowMessage(name);
             RegisteredWindowMessages.Register(retv);
@@ -1302,7 +1302,7 @@ namespace Win3muCore
         public static extern ushort _GetWindowWord(HWND hWnd, int nIndex);
 
         [EntryPoint(0x0085)]
-        public ushort GetWindowWord(HWND hWnd, nint nIndex)
+        public ushort GetWindowWord(HWND hWnd, WinInt nIndex)
         {
             if (nIndex >= 0)
                 return _GetWindowWord(hWnd, nIndex);
@@ -1326,7 +1326,7 @@ namespace Win3muCore
         public static extern ushort _SetWindowWord(HWND hWnd, int nIndex, ushort value);
 
         [EntryPoint(0x0086)]
-        public ushort SetWindowWord(HWND hWnd, nint nIndex, ushort value)
+        public ushort SetWindowWord(HWND hWnd, WinInt nIndex, ushort value)
         {
             if (nIndex >= 0)
             {
@@ -1564,11 +1564,11 @@ namespace Win3muCore
 
         [EntryPoint(0x009A)]
         [DllImport("user32.dll")]
-        public static extern bool CheckMenuItem(HMENU hMenu, nuint item, nuint flags);
+        public static extern bool CheckMenuItem(HMENU hMenu, WinUInt item, WinUInt flags);
 
         [EntryPoint(0x009B)]
         [DllImport("user32.dll")]
-        public static extern bool EnableMenuItem(HMENU hMenu, nuint item, nuint flags);
+        public static extern bool EnableMenuItem(HMENU hMenu, WinUInt item, WinUInt flags);
 
         [EntryPoint(0x009c)]
         [DllImport("user32.dll")]
@@ -1584,7 +1584,7 @@ namespace Win3muCore
 
         [EntryPoint(0x009f)]
         [DllImport("user32.dll")]
-        public static extern HMENU GetSubMenu(HMENU hMenu, nint pos);
+        public static extern HMENU GetSubMenu(HMENU hMenu, WinInt pos);
 
         [EntryPoint(0x00A0)]
         [DllImport("user32.dll")]
@@ -1593,7 +1593,7 @@ namespace Win3muCore
         // 00A1 - GETMENUSTRING
         [EntryPoint(0x00A1)]
         [DllImport("user32.dll")]
-        public static extern bool GetMenuString(HMENU hMenu, nuint id, [BufSize(+1)] [Out] StringBuilder sb, nint cch, nuint flag);
+        public static extern bool GetMenuString(HMENU hMenu, WinUInt id, [BufSize(+1)] [Out] StringBuilder sb, WinInt cch, WinUInt flag);
 
 
         // 00A2 - HILITEMENUITEM
@@ -1870,10 +1870,10 @@ namespace Win3muCore
 
 
         [DllImport("user32.dll", EntryPoint ="GetSystemMetrics")]
-        public static extern nint _GetSystemMetrics(nint nIndex);
+        public static extern WinInt _GetSystemMetrics(WinInt nIndex);
 
         [EntryPoint(0x00b3)]
-        public nint GetSystemMetrics(nint nIndex)
+        public WinInt GetSystemMetrics(WinInt nIndex)
         {
             if (nIndex>=0 && nIndex<WinCommon.SystemMetricNames.Length)
             {
@@ -1886,10 +1886,10 @@ namespace Win3muCore
         }
                                                            
         [DllImport("user32.dll", EntryPoint = "GetSysColor")]
-        public static extern uint _GetSysColor(nint nIndex);
+        public static extern uint _GetSysColor(WinInt nIndex);
 
         [EntryPoint(0x00b4)]
-        public uint GetSysColor(nint nIndex)
+        public uint GetSysColor(WinInt nIndex)
         {
             if (nIndex >= 0 && nIndex < WinCommon.SystemColorNames.Length)
             {
@@ -1947,7 +1947,7 @@ namespace Win3muCore
         public static extern uint TabbedTextOut(IntPtr hDC, int X, int Y, string str, int cch, int tabs, [In] int[] tabPositions, int tabOrigin);
 
         [EntryPoint(0x00c4)]
-        public uint TabbedTextOut(HDC hDC, nint X, nint Y, uint psz, nint cch, nint tabs, uint ptabPositions, nint tabOrigin)
+        public uint TabbedTextOut(HDC hDC, WinInt X, WinInt Y, uint psz, WinInt cch, WinInt tabs, uint ptabPositions, WinInt tabOrigin)
         {
             // Widen tab positions
             int[] tabPositions = new int[tabs];
@@ -1963,7 +1963,7 @@ namespace Win3muCore
         public static extern uint GetTabbedTextExtent(IntPtr hDC, string str, int cch, int tabs, [In] int[] tabPositions);
 
         [EntryPoint(0x00c5)]
-        public uint GetTabbedTextExtent(HDC hDC, uint psz, nint cch, nint tabs, uint ptabPositions)
+        public uint GetTabbedTextExtent(HDC hDC, uint psz, WinInt cch, WinInt tabs, uint ptabPositions)
         {
             // Widen tab positions
             int[] tabPositions = new int[tabs];
@@ -1986,7 +1986,7 @@ namespace Win3muCore
         // 00CD - WRITECOMM
 
         [EntryPoint(0x00cd)]
-        public int WriteComm(nint nCid, uint pszString, nint cbString)
+        public int WriteComm(WinInt nCid, uint pszString, WinInt cbString)
         {
             return -1;
         }
@@ -2109,10 +2109,10 @@ namespace Win3muCore
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, nuint uFlags);
+        public static extern bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, WinUInt uFlags);
 
         [EntryPoint(0x00e8)]
-        public bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, short X, short Y, short cx, short cy, nuint uFlags)
+        public bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, short X, short Y, short cx, short cy, WinUInt uFlags)
         {
             if ((uFlags & Win32.SWP_NOSIZE)==0)
             {
@@ -2247,11 +2247,11 @@ namespace Win3muCore
 
         [EntryPoint(0x00F9)]
         [DllImport("user32.dll")]
-        public static extern nint GetAsyncKeyState(nint key);
+        public static extern WinInt GetAsyncKeyState(WinInt key);
 
         [EntryPoint(0x00FA)]
         [DllImport("user32.dll")]
-        public static extern nuint GetMenuState(HMENU hMenu, nuint uId, nuint uFlags);
+        public static extern WinUInt GetMenuState(HMENU hMenu, WinUInt uId, WinUInt uFlags);
 
         // 00FB - SENDDRIVERMESSAGE
         // 00FC - OPENDRIVER
@@ -2270,11 +2270,11 @@ namespace Win3muCore
 
         [EntryPoint(0x0106)]
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern HWND GetWindow(HWND hWnd, nuint uCmd);
+        public static extern HWND GetWindow(HWND hWnd, WinUInt uCmd);
 
         [EntryPoint(0x0107)]
         [DllImport("user32.dll")]
-        public static extern nint GetMenuItemCount(HMENU hMenu);
+        public static extern WinInt GetMenuItemCount(HMENU hMenu);
 
         // 0108 - GETMENUITEMID
         // 0109 - SHOWOWNEDPOPUPS
@@ -2288,7 +2288,7 @@ namespace Win3muCore
         // 010B - SHOWSCROLLBAR
         [EntryPoint(0x010B)]
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool ShowScrollBar(HWND hWnd, nint wBar, bool bShow);
+        public static extern bool ShowScrollBar(HWND hWnd, WinInt wBar, bool bShow);
 
         // 010C - GLOBALADDATOM
         [EntryPoint(0x010C)]
@@ -2308,7 +2308,7 @@ namespace Win3muCore
         
         // 010F - GLOBALGETATOMNAME
         [EntryPoint(0x010F)]        
-        public ushort GlobalGetAtomName(ushort nAtom, uint lpString, nint nSize)
+        public ushort GlobalGetAtomName(ushort nAtom, uint lpString, WinInt nSize)
         {
             StringBuilder AtomName = new StringBuilder(nSize);
             uint  Size2 = GlobalGetAtomNameA(nAtom, AtomName, nSize);
@@ -2327,7 +2327,7 @@ namespace Win3muCore
 
         [EntryPoint(0x0115)]
         [DllImport("user32.dll")]
-        public static extern nint GetDlgCtrlID(HWND hWnd);
+        public static extern WinInt GetDlgCtrlID(HWND hWnd);
 
         // 0116 - GETDESKTOPHWND
         // 0117 - OLDSETDESKPATTERN
@@ -2339,7 +2339,7 @@ namespace Win3muCore
 
         [EntryPoint(0x011b)]
         [DllImport("gdi32.dll")]
-        public static extern nuint RealizePalette(HDC hDC);
+        public static extern WinUInt RealizePalette(HDC hDC);
 
         // 011C - GETFREESYSTEMRESOURCES
         // 011D - BEAR285
@@ -2473,7 +2473,7 @@ namespace Win3muCore
         public static extern IntPtr CreateIcon(IntPtr hInstance, int width, int height, byte planes, byte bitsPixel, IntPtr ptrAndBits, IntPtr ptrXorBits);
 
         [EntryPoint(0x0197)]
-        public HGDIOBJ CreateIcon(ushort hInstance, nint width, nint height, byte planes, byte bitsPixel, uint ptrAndBits, uint ptrXorBits)
+        public HGDIOBJ CreateIcon(ushort hInstance, WinInt width, WinInt height, byte planes, byte bitsPixel, uint ptrAndBits, uint ptrXorBits)
         {
             using (var hpAndBits = _machine.GlobalHeap.GetHeapPointer(ptrAndBits, false))
             using (var hpXorBits = _machine.GlobalHeap.GetHeapPointer(ptrXorBits, false))
@@ -2491,7 +2491,7 @@ namespace Win3muCore
         public static extern bool InsertMenu(HMENU hmenu, uint position, uint flags, IntPtr uIDNewItem, IntPtr dataOrBitmap);
 
         [EntryPoint(0x019A)]
-        public bool InsertMenu(HMENU hMenu, nuint uPosition, nuint uFlags, ushort idOrHMenu, uint dataBitmapOrString)
+        public bool InsertMenu(HMENU hMenu, WinUInt uPosition, WinUInt uFlags, ushort idOrHMenu, uint dataBitmapOrString)
         {
             // ID or HMENU?
             IntPtr idOrHMenu32;
@@ -2527,7 +2527,7 @@ namespace Win3muCore
         public static extern bool AppendMenu(HMENU hMenu, uint uFlags, IntPtr uIDNewItem, IntPtr dataOrBitmap);
 
         [EntryPoint(0x019B)]
-        public bool AppendMenu(HMENU hMenu, nuint uFlags, ushort idOrHMenu, uint dataBitmapOrString)
+        public bool AppendMenu(HMENU hMenu, WinUInt uFlags, ushort idOrHMenu, uint dataBitmapOrString)
         {
             // ID or HMENU?
             IntPtr idOrHMenu32;
@@ -2560,11 +2560,11 @@ namespace Win3muCore
 
         [EntryPoint(0x019c)]
         [DllImport("user32.dll")]
-        public static extern bool RemoveMenu(HMENU hMenu, nuint uPosition, nuint uFlags);
+        public static extern bool RemoveMenu(HMENU hMenu, WinUInt uPosition, WinUInt uFlags);
 
         [EntryPoint(0x019d)]
         [DllImport("user32.dll")]
-        public static extern bool DeleteMenu(HMENU hMenu, nuint uPosition, nuint uFlags);
+        public static extern bool DeleteMenu(HMENU hMenu, WinUInt uPosition, WinUInt uFlags);
 
         [DllImport("user32.dll")]
         public static extern bool ModifyMenu(HMENU hMenu, uint uPosition, uint uFlags, IntPtr idOrHMenu, IntPtr dataOrBitmap);
@@ -2573,7 +2573,7 @@ namespace Win3muCore
         public static extern bool ModifyMenu(HMENU hMenu, uint uPosition, uint uFlags, IntPtr idOrHMenu, string str);
 
         [EntryPoint(0x019e)]
-        public bool ModifyMenu(HMENU hMenu, nuint uPosition, nuint uFlags, ushort idOrHMenu, uint dataBitmapOrString)
+        public bool ModifyMenu(HMENU hMenu, WinUInt uPosition, WinUInt uFlags, ushort idOrHMenu, uint dataBitmapOrString)
         {
             // ID or HMENU?
             IntPtr idOrHMenu32;
@@ -2632,7 +2632,7 @@ namespace Win3muCore
         [EntryPoint(0x01A5)]
         public ushort wvsprintf(uint lpOutput, string lpFormat, uint lpArglist)
         {
-            var tokens = sprintf.Parse(lpFormat);
+            var tokens = Sprintf.Parse(lpFormat);
 
             var paramCount = tokens.Count(x => x.literal == null);
             var parms = new object[paramCount];
@@ -2674,7 +2674,7 @@ namespace Win3muCore
                 lpArglist = (uint)(lpArglist + tokens[i].StackSize);
             }
 
-            var str = sprintf.Format(tokens, parms);
+            var str = Sprintf.Format(tokens, parms);
             return _machine.WriteString(lpOutput, str, (ushort)0xFFFF);
         }
 
@@ -2682,7 +2682,7 @@ namespace Win3muCore
         // 01A7 - DLGDIRSELECTCOMBOBOXEX
         // 01AE - LSTRCMP
         [EntryPoint(0x01AE)]
-        public nint lstrcmp(string a, string b)
+        public WinInt lstrcmp(string a, string b)
         {
             return string.Compare(a, b, false);
         }
@@ -2841,7 +2841,7 @@ namespace Win3muCore
         
 
         [EntryPoint(0x01d7)]
-        public nint lstrcmpi(string a, string b)
+        public WinInt lstrcmpi(string a, string b)
         {
             return string.Compare(a, b, true);
         }                                     

@@ -15,7 +15,7 @@ namespace ConDos
             var buf = new byte[Marshal.SizeOf<T>()];
 
             // Read it
-            This.Read(buf, 0, buf.Length);
+            This.ReadExactly(buf, 0, buf.Length);
 
             // Convert to struct
             var handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
@@ -40,7 +40,7 @@ namespace ConDos
         public static byte[] ReadBytes(this System.IO.FileStream This, int length)
         {
             var buf = new byte[length];
-            This.Read(buf, 0, length);
+            This.ReadExactly(buf, 0, length);
             return buf;
         }
 

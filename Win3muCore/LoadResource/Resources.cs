@@ -246,7 +246,7 @@ namespace Win3muCore
                 if (byteCount>0)
                 {
                     var buf = new byte[byteCount];
-                    strm.Read(buf, 0, buf.Length);
+                    strm.ReadExactly(buf, 0, buf.Length);
                     ms.Write(buf, 0, buf.Length);
                 }
             }

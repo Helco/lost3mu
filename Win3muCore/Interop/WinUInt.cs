@@ -25,31 +25,31 @@ using System.Threading.Tasks;
 namespace Win3muCore
 {
     [MappedTypeAttribute]
-    public struct nuint : IFormattable
+    public struct WinUInt : IFormattable
     {
-        public nuint(uint value)
+        public WinUInt(uint value)
         {
             this.value = value;
         }
 
         public uint value;
 
-        public static nuint To32(ushort value)
+        public static WinUInt To32(ushort value)
         {
-            return new nuint(value);
+            return new WinUInt(value);
         }
 
-        public static ushort To16(nuint value)
+        public static ushort To16(WinUInt value)
         {
             return (ushort)value.value;
         }
 
-        public static implicit operator nuint(uint value)
+        public static implicit operator WinUInt(uint value)
         {
-            return new nuint(value);
+            return new WinUInt(value);
         }
 
-        public static implicit operator uint (nuint value)
+        public static implicit operator uint (WinUInt value)
         {
             return value.value;
         }

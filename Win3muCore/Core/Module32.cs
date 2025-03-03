@@ -599,9 +599,9 @@ namespace Win3muCore
                         {
                             capacity = (int)(ushort)_paramValues[bufsizeParamIndex];
                         }
-                        else if (type == typeof(nint))
+                        else if (type == typeof(WinInt))
                         {
-                            capacity = (nint)_paramValues[bufsizeParamIndex];
+                            capacity = (WinInt)_paramValues[bufsizeParamIndex];
                         }
                         else
                         {

@@ -35,9 +35,9 @@ namespace Win3muCore.MessageSemantics
         public abstract void To16(Machine machine, ref Win32.MSG msg32, ref Win16.MSG msg16);
     }
 
-    class packAndPost : Postable
+    class PackAndPost : Postable
     {
-        static packAndPost()
+        static PackAndPost()
         {
             WM_PACKANDPOST = User._RegisterWindowMessage("WIN3MU_PACKANDPOST");
         }
@@ -58,10 +58,10 @@ namespace Win3muCore.MessageSemantics
             msg16.lParam = msg32.lParam.DWord();
         }
 
-        public static packAndPost Instance = new packAndPost();
+        public static PackAndPost Instance = new PackAndPost();
     }
 
-    class unused : Postable
+    class Unused : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -76,7 +76,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class copy : Postable
+    class Copy : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -90,10 +90,10 @@ namespace Win3muCore.MessageSemantics
             msg16.lParam = msg32.lParam.ToUInt32();
         }
 
-        public static copy Instance = new copy();
+        public static Copy Instance = new Copy();
     }
 
-    class notimpl : Postable
+    class NotImpl : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -106,7 +106,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class copy_zero : Postable
+    class CopyZero : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -134,7 +134,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class copy_unused : Postable
+    class CopyUnused : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -149,7 +149,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class hdc_unused : Postable
+    class HDCUnused : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -164,7 +164,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class hwnd_copy : Postable
+    class HWNDCopy : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -179,7 +179,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class copy_hwnd : Postable
+    class CopyHWND : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -194,7 +194,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class hmenu_copy : Postable
+    class HMENUCopy : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -211,7 +211,7 @@ namespace Win3muCore.MessageSemantics
 
 
 
-    class copy_htask : Postable
+    class CopyHTASK : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -227,7 +227,7 @@ namespace Win3muCore.MessageSemantics
     }
 
 
-    class hgdiobj_unused: Postable
+    class HGDIOBJUnused: Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -242,7 +242,7 @@ namespace Win3muCore.MessageSemantics
         }
     }
 
-    class hgdiobj_copy: Postable
+    class HGDIOBJCopy: Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {
@@ -258,7 +258,7 @@ namespace Win3muCore.MessageSemantics
     }
 
     // Cracks lparam16 -> wParam32 and lParam32
-    class cracked_lparam16 : Postable
+    class CrackedLParam16 : Postable
     {
         public override void To32(Machine machine, ref Win16.MSG msg16, ref Win32.MSG msg32)
         {

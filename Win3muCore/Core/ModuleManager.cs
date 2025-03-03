@@ -55,7 +55,7 @@ namespace Win3muCore
         public ModuleBase GetModule(ushort hModule)
         {
             // Get the executable module?
-            if (hModule == 0)
+            if (hModule == 0) // TODO: Check this warning
                 return _loadedModules.OfType<Module16>().FirstOrDefault(x => !x.IsDll && x.hModule!=0);
 
             ModuleBase module;

@@ -115,7 +115,7 @@ namespace Win3muCore.NeFile
         {
             // Read from disk
             _file.Seek(seg.offset, SeekOrigin.Begin);
-            _file.Read(buffer, 0, seg.lengthBytes);
+            _file.ReadExactly(buffer, 0, seg.lengthBytes);
         }
 
         public ushort GetOrdinalFromName(string functionName)
@@ -614,7 +614,7 @@ namespace Win3muCore.NeFile
 
             // Read it
             var buf = new byte[e.length];
-            _file.Read(buf, 0, e.length);
+            _file.ReadExactly(buf, 0, e.length);
             return buf;
         }
 

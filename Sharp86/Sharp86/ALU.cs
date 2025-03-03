@@ -106,7 +106,7 @@ namespace Sharp86
         }
 
         [Flags]
-        enum fm
+        enum FM
         {
             Bit8        = 0x0000001,        // Last operation was 8 bit
             ZFromResult = 0x0000002,        // Get the Z flag from result
@@ -124,15 +124,15 @@ namespace Sharp86
             AFlag       = 0x0002000,        // A flag value
         }
 
-        fm _fm;
+        FM _fm;
 
         public bool FlagO
         {
             get
             {
-                if ((_fm & fm.OFromAdd) != 0)
+                if ((_fm & FM.OFromAdd) != 0)
                 {
-                    if ((_fm & fm.Bit8)!=0)
+                    if ((_fm & FM.Bit8)!=0)
                     {
                         return ((_aluResult ^ _aluOperA) & (_aluResult ^ _aluOperB) & 0x80) != 0;
                     }
@@ -141,9 +141,9 @@ namespace Sharp86
                         return ((_aluResult ^ _aluOperA) & (_aluResult ^ _aluOperB) & 0x8000) != 0;
                     }
                 }
-                else if ((_fm & fm.OFromSub) != 0)
+                else if ((_fm & FM.OFromSub) != 0)
                 {
-                    if ((_fm & fm.Bit8) != 0)
+                    if ((_fm & FM.Bit8) != 0)
                     {
                         return ((_aluResult ^ _aluOperA) & (_aluOperA ^ _aluOperB) & 0x80) != 0;
                     }
@@ -154,19 +154,19 @@ namespace Sharp86
                 }
                 else
                 {
-                    return (_fm & fm.OFlag)!= 0;
+                    return (_fm & FM.OFlag)!= 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.OFlag;
-                    _fm &= ~(fm.OFromAdd | fm.OFromSub);
+                    _fm |= FM.OFlag;
+                    _fm &= ~(FM.OFromAdd | FM.OFromSub);
                 }
                 else
                 {
-                    _fm &= ~(fm.OFlag | fm.OFromAdd | fm.OFromSub);
+                    _fm &= ~(FM.OFlag | FM.OFromAdd | FM.OFromSub);
                 }
             }
 
@@ -175,25 +175,25 @@ namespace Sharp86
         {
             get
             {
-                if ((_fm & fm.AFromResult) != 0)
+                if ((_fm & FM.AFromResult) != 0)
                 {
                     return ((_aluOperA ^ _aluOperB ^ _aluResult) & 0x10) != 0;
                 }
                 else
                 {
-                    return (_fm & fm.AFlag) != 0;
+                    return (_fm & FM.AFlag) != 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.AFlag;
-                    _fm &= ~fm.AFromResult;
+                    _fm |= FM.AFlag;
+                    _fm &= ~FM.AFromResult;
                 }
                 else
                 {
-                    _fm &= ~(fm.AFlag | fm.AFromResult);
+                    _fm &= ~(FM.AFlag | FM.AFromResult);
                 }
             }
         }
@@ -202,28 +202,28 @@ namespace Sharp86
         {
             get
             {
-                if ((_fm & fm.CFromResult)!=0)
+                if ((_fm & FM.CFromResult)!=0)
                 {
-                    if ((_fm & fm.Bit8)!=0)
+                    if ((_fm & FM.Bit8)!=0)
                          return (_aluResult & 0x100) != 0;
                     else
                         return (_aluResult & 0x10000) != 0;
                 }
                 else
                 {
-                    return (_fm & fm.CFlag)!= 0;
+                    return (_fm & FM.CFlag)!= 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.CFlag;
-                    _fm &= ~fm.CFromResult;
+                    _fm |= FM.CFlag;
+                    _fm &= ~FM.CFromResult;
                 }
                 else
                 {
-                    _fm &= ~(fm.CFlag | fm.CFromResult);
+                    _fm &= ~(FM.CFlag | FM.CFromResult);
                 }
             }
         }
@@ -232,28 +232,28 @@ namespace Sharp86
         {
             get
             {
-                if ((_fm & fm.ZFromResult) != 0)
+                if ((_fm & FM.ZFromResult) != 0)
                 {
-                    if ((_fm & fm.Bit8) != 0)
+                    if ((_fm & FM.Bit8) != 0)
                         return (_aluResult & 0xFF) == 0;
                     else
                         return (_aluResult & 0xFFFF) == 0;
                 }
                 else
                 {
-                    return (_fm & fm.ZFlag) != 0;
+                    return (_fm & FM.ZFlag) != 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.ZFlag;
-                    _fm &= ~fm.ZFromResult;
+                    _fm |= FM.ZFlag;
+                    _fm &= ~FM.ZFromResult;
                 }
                 else
                 {
-                    _fm &= ~(fm.ZFlag | fm.ZFromResult);
+                    _fm &= ~(FM.ZFlag | FM.ZFromResult);
                 }
             }
         }
@@ -262,28 +262,28 @@ namespace Sharp86
         {
             get
             {
-                if ((_fm & fm.SFromResult) != 0)
+                if ((_fm & FM.SFromResult) != 0)
                 {
-                    if ((_fm & fm.Bit8) != 0)
+                    if ((_fm & FM.Bit8) != 0)
                         return (_aluResult & 0x80) != 0;
                     else
                         return (_aluResult & 0x8000) != 0;
                 }
                 else
                 {
-                    return (_fm & fm.SFlag) != 0;
+                    return (_fm & FM.SFlag) != 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.SFlag;
-                    _fm &= ~fm.SFromResult;
+                    _fm |= FM.SFlag;
+                    _fm &= ~FM.SFromResult;
                 }
                 else
                 {
-                    _fm &= ~(fm.SFlag | fm.SFromResult);
+                    _fm &= ~(FM.SFlag | FM.SFromResult);
                 }
             }
         }
@@ -292,25 +292,25 @@ namespace Sharp86
         {
             get
             {
-                if ((_fm & fm.PFromResult) != 0)
+                if ((_fm & FM.PFromResult) != 0)
                 {
                     return _parityTable[_aluResult & 0xFF] != 0;
                 }
                 else
                 {
-                    return (_fm & fm.PFlag) != 0;
+                    return (_fm & FM.PFlag) != 0;
                 }
             }
             set
             {
                 if (value)
                 {
-                    _fm |= fm.PFlag;
-                    _fm &= ~fm.PFromResult;
+                    _fm |= FM.PFlag;
+                    _fm &= ~FM.PFromResult;
                 }
                 else
                 {
-                    _fm &= ~(fm.PFlag | fm.PFromResult);
+                    _fm &= ~(FM.PFlag | FM.PFromResult);
                 }
             }
         }
@@ -327,7 +327,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.AFromResult | fm.CFromResult | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | FM.CFromResult | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (ushort)_aluResult;
             }
@@ -341,7 +341,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.Bit8 | fm.AFromResult | fm.CFromResult | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | FM.CFromResult | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (byte)_aluResult;
             }
@@ -355,7 +355,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.AFromResult | fm.CFromResult | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | FM.CFromResult | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (ushort)_aluResult;
             }
@@ -369,7 +369,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.Bit8 | fm.AFromResult | fm.CFromResult | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | FM.CFromResult | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (byte)_aluResult;
             }
@@ -383,7 +383,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (ushort)_aluResult;
             }
@@ -397,7 +397,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.Bit8 | fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (byte)_aluResult;
             }
@@ -411,7 +411,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (ushort)_aluResult;
             }
@@ -425,7 +425,7 @@ namespace Sharp86
 
                 _aluOperA = a;
                 _aluOperB = b;
-                _fm = fm.Bit8 | fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (byte)_aluResult;
             }
@@ -436,7 +436,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a & (uint)b;
-                _fm = fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (ushort)_aluResult;
             }
         }
@@ -446,7 +446,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a & (uint)b;
-                _fm = fm.Bit8 | fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (byte)_aluResult;
             }
         }
@@ -456,7 +456,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a | (uint)b;
-                _fm = fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (ushort)_aluResult;
             }
         }
@@ -466,7 +466,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a | (uint)b;
-                _fm = fm.Bit8 | fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (byte)_aluResult;
             }
         }
@@ -476,7 +476,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a ^ (uint)b;
-                _fm = fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (ushort)_aluResult;
             }
         }
@@ -486,7 +486,7 @@ namespace Sharp86
             unchecked
             {
                 _aluResult = (uint)a ^ (uint)b;
-                _fm = fm.Bit8 | fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 return (byte)_aluResult;
             }
         }
@@ -497,7 +497,7 @@ namespace Sharp86
             {
                 _aluOperA = a;
                 _aluOperB = 1;
-                _fm = fm.AFromResult | (FlagC ? fm.CFlag : 0) | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | (FlagC ? FM.CFlag : 0) | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 _aluResult = (uint)a + 1;
                 return (ushort)_aluResult;
             }
@@ -509,7 +509,7 @@ namespace Sharp86
             {
                 _aluOperA = a;
                 _aluOperB = 1;
-                _fm = fm.Bit8 | fm.AFromResult | (FlagC ? fm.CFlag : 0) | fm.OFromAdd | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | (FlagC ? FM.CFlag : 0) | FM.OFromAdd | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 _aluResult = (uint)a + 1;
                 return (byte)_aluResult;
             }
@@ -521,7 +521,7 @@ namespace Sharp86
             {
                 _aluOperA = a;
                 _aluOperB = 1;
-                _fm = fm.AFromResult | (FlagC ? fm.CFlag : 0) | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | (FlagC ? FM.CFlag : 0) | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 _aluResult = (uint)a - 1;
                 return (ushort)_aluResult;
             }
@@ -533,7 +533,7 @@ namespace Sharp86
             {
                 _aluOperA = a;
                 _aluOperB = 1;
-                _fm = fm.Bit8 | fm.AFromResult | (FlagC ? fm.CFlag : 0) | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | (FlagC ? FM.CFlag : 0) | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
                 _aluResult = (uint)a - 1;
                 return (byte)_aluResult;
             }
@@ -560,12 +560,12 @@ namespace Sharp86
             }
 
             _fm =
-                ((_aluResult & 0x0001) != 0 ? fm.CFlag : 0) |
-                (o ? fm.OFlag : 0) |
-                (FlagS ? fm.SFlag : 0) |
-                (FlagZ ? fm.ZFlag : 0) |    
-                (FlagP ? fm.PFlag : 0) |
-                (FlagA ? fm.AFlag : 0);
+                ((_aluResult & 0x0001) != 0 ? FM.CFlag : 0) |
+                (o ? FM.OFlag : 0) |
+                (FlagS ? FM.SFlag : 0) |
+                (FlagZ ? FM.ZFlag : 0) |    
+                (FlagP ? FM.PFlag : 0) |
+                (FlagA ? FM.AFlag : 0);
 
             return (ushort)_aluResult;
         }
@@ -591,12 +591,12 @@ namespace Sharp86
             }
 
             _fm =
-                ((_aluResult & 0x0001) != 0 ? fm.CFlag : 0) |
-                (o ? fm.OFlag : 0) |
-                (FlagS ? fm.SFlag : 0) |
-                (FlagZ ? fm.ZFlag : 0) |
-                (FlagP ? fm.PFlag : 0) |
-                (FlagA ? fm.AFlag : 0);
+                ((_aluResult & 0x0001) != 0 ? FM.CFlag : 0) |
+                (o ? FM.OFlag : 0) |
+                (FlagS ? FM.SFlag : 0) |
+                (FlagZ ? FM.ZFlag : 0) |
+                (FlagP ? FM.PFlag : 0) |
+                (FlagA ? FM.AFlag : 0);
 
             return (byte)_aluResult;
         }
@@ -624,12 +624,12 @@ namespace Sharp86
                 }
 
                 _fm = 
-                    ((_aluResult & 0x8000) != 0 ? fm.CFlag : 0) |  
-                    (o ? fm.OFlag : 0) |
-                    (FlagS ? fm.SFlag : 0) |
-                    (FlagZ ? fm.ZFlag : 0) |
-                    (FlagP ? fm.PFlag : 0) |
-                    (FlagA ? fm.AFlag : 0);
+                    ((_aluResult & 0x8000) != 0 ? FM.CFlag : 0) |  
+                    (o ? FM.OFlag : 0) |
+                    (FlagS ? FM.SFlag : 0) |
+                    (FlagZ ? FM.ZFlag : 0) |
+                    (FlagP ? FM.PFlag : 0) |
+                    (FlagA ? FM.AFlag : 0);
 
                 return (ushort)_aluResult;
             }
@@ -658,12 +658,12 @@ namespace Sharp86
                 }
 
                 _fm =
-                    ((_aluResult & 0x80) != 0 ? fm.CFlag : 0) |
-                    (o ? fm.OFlag : 0) |
-                    (FlagS ? fm.SFlag : 0) |
-                    (FlagZ ? fm.ZFlag : 0) |
-                    (FlagP ? fm.PFlag : 0) |
-                    (FlagA ? fm.AFlag : 0);
+                    ((_aluResult & 0x80) != 0 ? FM.CFlag : 0) |
+                    (o ? FM.OFlag : 0) |
+                    (FlagS ? FM.SFlag : 0) |
+                    (FlagZ ? FM.ZFlag : 0) |
+                    (FlagP ? FM.PFlag : 0) |
+                    (FlagA ? FM.AFlag : 0);
 
                 return (byte)_aluResult;
             }
@@ -692,12 +692,12 @@ namespace Sharp86
                         o = !FlagO;
                 }
 
-                _fm = fm.CFromResult | 
-                    (o ? fm.OFlag : 0) |
-                    (FlagS ? fm.SFlag : 0) |
-                    (FlagZ ? fm.ZFlag : 0) | 
-                    (FlagP ? fm.PFlag : 0) | 
-                    (FlagA ? fm.AFlag : 0);
+                _fm = FM.CFromResult | 
+                    (o ? FM.OFlag : 0) |
+                    (FlagS ? FM.SFlag : 0) |
+                    (FlagZ ? FM.ZFlag : 0) | 
+                    (FlagP ? FM.PFlag : 0) | 
+                    (FlagA ? FM.AFlag : 0);
 
                 return (ushort)_aluResult;
             }
@@ -724,12 +724,12 @@ namespace Sharp86
                     o = true;
             }
 
-            _fm = fm.CFromResult |
-                (o ? fm.OFlag : 0) |
-                (FlagS ? fm.SFlag : 0) |
-                (FlagZ ? fm.ZFlag : 0) |
-                (FlagP ? fm.PFlag : 0) |
-                (FlagA ? fm.AFlag : 0);
+            _fm = FM.CFromResult |
+                (o ? FM.OFlag : 0) |
+                (FlagS ? FM.SFlag : 0) |
+                (FlagZ ? FM.ZFlag : 0) |
+                (FlagP ? FM.PFlag : 0) |
+                (FlagA ? FM.AFlag : 0);
 
             return (ushort)_aluResult;
         }
@@ -755,12 +755,12 @@ namespace Sharp86
                     o = true;
             }
 
-            _fm = fm.Bit8 | fm.CFromResult |
-                (o ? fm.OFlag : 0) |
-                (FlagS ? fm.SFlag : 0) |
-                (FlagZ ? fm.ZFlag : 0) |
-                (FlagP ? fm.PFlag : 0) |
-                (FlagA ? fm.AFlag : 0);
+            _fm = FM.Bit8 | FM.CFromResult |
+                (o ? FM.OFlag : 0) |
+                (FlagS ? FM.SFlag : 0) |
+                (FlagZ ? FM.ZFlag : 0) |
+                (FlagP ? FM.PFlag : 0) |
+                (FlagA ? FM.AFlag : 0);
 
             return (byte)_aluResult;
         }
@@ -788,12 +788,12 @@ namespace Sharp86
                         o = !FlagO;
                 }
 
-                _fm = fm.Bit8 | fm.CFromResult |
-                    (o ? fm.OFlag : 0) |
-                    (FlagS ? fm.SFlag : 0) |
-                    (FlagZ ? fm.ZFlag : 0) |
-                    (FlagP ? fm.PFlag : 0) |
-                    (FlagA ? fm.AFlag : 0);
+                _fm = FM.Bit8 | FM.CFromResult |
+                    (o ? FM.OFlag : 0) |
+                    (FlagS ? FM.SFlag : 0) |
+                    (FlagZ ? FM.ZFlag : 0) |
+                    (FlagP ? FM.PFlag : 0) |
+                    (FlagA ? FM.AFlag : 0);
 
                 return (byte)_aluResult;
             }
@@ -808,7 +808,7 @@ namespace Sharp86
 
                 _aluResult = (uint)(a << (b & 0x1f));
 
-                _fm = fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 // Single bit shifts update FlagO to the xor of 
                 // the carry flag and the msb of the result
@@ -816,13 +816,13 @@ namespace Sharp86
                 {
                     if (((_aluResult ^ (_aluResult << 1)) & 0x10000) != 0)
                     {
-                        _fm |= fm.OFlag;
+                        _fm |= FM.OFlag;
                     }
                 }
                 else
                 {
                     if (((_aluResult ^ (_aluResult << 1)) & (0x8000 << b)) != 0)
-                        _fm |= fm.OFlag;
+                        _fm |= FM.OFlag;
                 }
 
                 return (ushort)_aluResult;
@@ -838,7 +838,7 @@ namespace Sharp86
 
                 _aluResult = (uint)(a << (b & 0x1f));
 
-                _fm = fm.Bit8 | fm.CFromResult | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.CFromResult | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 // Single bit shifts update FlagO to the xor of 
                 // the carry flag and the msb of the result
@@ -846,13 +846,13 @@ namespace Sharp86
                 {
                     if (((_aluResult ^ (_aluResult << 1)) & 0x100) != 0)
                     {
-                        _fm |= fm.OFlag;
+                        _fm |= FM.OFlag;
                     }
                 }
                 else
                 {
                     if (((_aluResult ^ (_aluResult << 1)) & (0x80 << b)) != 0)
-                        _fm |= fm.OFlag;
+                        _fm |= FM.OFlag;
                 }
 
                 return (byte)_aluResult;
@@ -870,13 +870,13 @@ namespace Sharp86
 
                 _aluResult = (uint)(a >> b);
 
-                _fm = fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 if (((a >> (b - 1)) & 0x01) != 0)
-                    _fm |= fm.CFlag;
+                    _fm |= FM.CFlag;
 
                 if (((_aluResult ^ a) & 0x8000) != 0)
-                    _fm |= fm.OFlag;
+                    _fm |= FM.OFlag;
 
                 return (ushort)_aluResult;
             }
@@ -893,13 +893,13 @@ namespace Sharp86
 
                 _aluResult = (uint)(a >> b);
 
-                _fm = fm.Bit8 | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 if (((a >> (b - 1)) & 0x01) != 0)
-                    _fm |= fm.CFlag;
+                    _fm |= FM.CFlag;
 
                 if (((_aluResult ^ a) & 0x80) != 0)
-                    _fm |= fm.OFlag;
+                    _fm |= FM.OFlag;
 
                 return (byte)_aluResult;
             }
@@ -916,13 +916,13 @@ namespace Sharp86
 
                 _aluResult = (uint)((int)(short)a >> b);
 
-                _fm = fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 if (((a >> (b - 1)) & 0x01) != 0)
-                    _fm |= fm.CFlag;
+                    _fm |= FM.CFlag;
 
                 if (((_aluResult ^ a) & 0x8000) != 0)
-                    _fm |= fm.OFlag;
+                    _fm |= FM.OFlag;
 
                 return (ushort)_aluResult;
             }
@@ -939,13 +939,13 @@ namespace Sharp86
 
                 _aluResult = (uint)((int)(sbyte)a >> b);
 
-                _fm = fm.Bit8 | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 if (((a >> (b - 1)) & 0x01) != 0)
-                    _fm |= fm.CFlag;
+                    _fm |= FM.CFlag;
 
                 if (((_aluResult ^ a) & 0x80) != 0)
-                    _fm |= fm.OFlag;
+                    _fm |= FM.OFlag;
 
                 return (byte)_aluResult;
             }
@@ -1005,7 +1005,7 @@ namespace Sharp86
             {
                 _aluResult = (uint)a * (uint)b;
 
-                _fm = fm.PFromResult | fm.SFromResult;
+                _fm = FM.PFromResult | FM.SFromResult;
 
                 FlagC = FlagO = (_aluResult & 0xFFFF0000) != 0;
 
@@ -1019,7 +1019,7 @@ namespace Sharp86
             {
                 _aluResult = (uint)a * (uint)b;
 
-                _fm = fm.Bit8 | fm.PFromResult | fm.SFromResult;
+                _fm = FM.Bit8 | FM.PFromResult | FM.SFromResult;
 
                 FlagC = FlagO = (_aluResult & 0xFFFFFF00) != 0;
 
@@ -1033,7 +1033,7 @@ namespace Sharp86
             {
                 _aluResult = (uint)((int)(short)a * (int)(short)b);
 
-                _fm = fm.PFromResult | fm.SFromResult;
+                _fm = FM.PFromResult | FM.SFromResult;
 
                 FlagC = FlagO = (int)(short)(_aluResult & 0xFFFF) != (int)_aluResult;
 
@@ -1047,7 +1047,7 @@ namespace Sharp86
             {
                 _aluResult = (uint)((int)(sbyte)a * (int)(sbyte)b);
 
-                _fm = fm.Bit8 | fm.PFromResult | fm.SFromResult;
+                _fm = FM.Bit8 | FM.PFromResult | FM.SFromResult;
 
                 FlagC = FlagO = (int)(sbyte)(_aluResult & 0xFF) != (int)_aluResult;
 
@@ -1063,7 +1063,7 @@ namespace Sharp86
 
                 _aluOperA = 0;
                 _aluOperB = b;
-                _fm = fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (ushort)_aluResult;
             }
@@ -1077,7 +1077,7 @@ namespace Sharp86
 
                 _aluOperA = 0;
                 _aluOperB = b;
-                _fm = fm.Bit8 | fm.AFromResult | fm.CFromResult | fm.OFromSub | fm.PFromResult | fm.SFromResult | fm.ZFromResult;
+                _fm = FM.Bit8 | FM.AFromResult | FM.CFromResult | FM.OFromSub | FM.PFromResult | FM.SFromResult | FM.ZFromResult;
 
                 return (byte)_aluResult;
             }

@@ -303,7 +303,7 @@ namespace Win3muCore
         }
 
         [EntryPoint(0x0030)]
-        public nint GetModuleUsage(ushort module)
+        public WinInt GetModuleUsage(ushort module)
         {
             var mod = module == 0 ? _machine.ProcessModule : _machine.ModuleManager.GetModule(module);
             if (mod == null)
@@ -368,13 +368,13 @@ namespace Win3muCore
         // 0038 - THROW
 
         [EntryPoint(0x0039)]
-        public nint GetProfileInt(string lpAppName, string lpKeyName, nint nDefault)
+        public WinInt GetProfileInt(string lpAppName, string lpKeyName, WinInt nDefault)
         {
             return GetPrivateProfileInt(lpAppName, lpKeyName, nDefault, "c:\\windows\\win.ini");
         }
 
         [EntryPoint(0x003a)]
-        public nuint GetProfileString(string lpAppName, string lpKeyName, string lpDefault, [BufSize(+1)] [Out] StringBuilder lpReturnedString, nint nSize)
+        public WinUInt GetProfileString(string lpAppName, string lpKeyName, string lpDefault, [BufSize(+1)] [Out] StringBuilder lpReturnedString, WinInt nSize)
         {
             return GetPrivateProfileString(lpAppName, lpKeyName, lpDefault, lpReturnedString, nSize, "c:\\windows\\win.ini");
         }
@@ -775,7 +775,7 @@ namespace Win3muCore
         }
 
         [EntryPoint(0x005a)]
-        public nint lstrlen(uint srcPtr)
+        public WinInt lstrlen(uint srcPtr)
         {
             ushort seg = srcPtr.Hiword();
             ushort off = srcPtr.Loword();
@@ -838,7 +838,7 @@ namespace Win3muCore
 
         // 0061 - GETTEMPFILENAME
         [EntryPoint(0x0061)]
-        public nint GetTempFileName(byte bDriveLetter, uint lpszPrefixString, ushort uUnique, uint lpszTempFileName)
+        public WinInt GetTempFileName(byte bDriveLetter, uint lpszPrefixString, ushort uUnique, uint lpszTempFileName)
         {
             /*
              * The GetTempFileName function creates a temporary filename of the following form: 
@@ -859,7 +859,7 @@ namespace Win3muCore
 
             StringBuilder result = new StringBuilder();
             result.AppendFormat("{0}:\\temp\\{1}{2}.TMP", drive, prefix, uUnique);
-            nint rc = (nint)result.Length;
+            WinInt rc = (WinInt)result.Length;
             _machine.WriteString(lpszTempFileName, result.ToString(), (ushort)rc);
             return rc;
         }
@@ -881,7 +881,7 @@ namespace Win3muCore
         // 006A - SETSWAPAREASIZE
 
         [EntryPoint(0x006b)]
-        public nuint SetErrorMode(nuint mode)
+        public WinUInt SetErrorMode(WinUInt mode)
         {
             return 0;
         }
@@ -922,7 +922,7 @@ namespace Win3muCore
         public static extern int _GetPrivateProfileInt(string lpAppName, string lpKeyName, int nDefault, string lpFileName);
 
         [EntryPoint(0x007F)]
-        public nint GetPrivateProfileInt(string lpAppName, string lpKeyName, nint nDefault, string lpFileName)
+        public WinInt GetPrivateProfileInt(string lpAppName, string lpKeyName, WinInt nDefault, string lpFileName)
         {
             // Check for unqualified path and map to windows folder
             if (!lpFileName.Contains('\\') && !lpFileName.Contains(':'))
@@ -941,7 +941,7 @@ namespace Win3muCore
         public static extern uint _GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, [BufSize(+1)] [Out] StringBuilder lpReturnedString, int nSize, string lpFileName);
 
         [EntryPoint(0x0080)]
-        public nuint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, [BufSize(+1)] [Out] StringBuilder lpReturnedString, nint nSize, string lpFileName)
+        public WinUInt GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, [BufSize(+1)] [Out] StringBuilder lpReturnedString, WinInt nSize, string lpFileName)
         {
             // Check for unqualified path and map to windows folder
             if (!lpFileName.Contains('\\') && !lpFileName.Contains(':'))
@@ -1000,7 +1000,7 @@ namespace Win3muCore
         // 0085 - GETEXEPTR
 
         [EntryPoint(0x0086)]
-        public static nint GetWindowDirectory([Out] [BufSize(+1)] StringBuilder sb, nint nSize)
+        public static WinInt GetWindowDirectory([Out] [BufSize(+1)] StringBuilder sb, WinInt nSize)
         {
             sb.Append("C:\\WINDOWS");
             return sb.Length;
@@ -1009,7 +1009,7 @@ namespace Win3muCore
 
         // 0087 - GETSYSTEMDIRECTORY
         [EntryPoint(0x0087)]
-        public static nint GetSystemDirectory([Out] [BufSize(+1)] StringBuilder lpBuffer, nint uSize)
+        public static WinInt GetSystemDirectory([Out] [BufSize(+1)] StringBuilder lpBuffer, WinInt uSize)
         {
             lpBuffer.Append("C:\\WINDOWS\\SYSTEM");
             return lpBuffer.Length;

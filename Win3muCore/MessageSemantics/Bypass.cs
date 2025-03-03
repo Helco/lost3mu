@@ -24,9 +24,9 @@ using System.Threading.Tasks;
 
 namespace Win3muCore.MessageSemantics
 {
-    class bypass : Base
+    class Bypass : Base
     {
-        public bypass()
+        public Bypass()
         {
         }
 
@@ -35,6 +35,6 @@ namespace Win3muCore.MessageSemantics
             return true;
         }
 
-        public static bypass Instance = new bypass();
+        public static Bypass Instance = new Bypass();
     }
 }
