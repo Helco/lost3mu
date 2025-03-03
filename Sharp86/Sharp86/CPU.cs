@@ -132,7 +132,7 @@ namespace Sharp86
         }
     }
 
-    public abstract class CPU : ALU
+    public class CPU : ALU
     {
         public CPU()
         {

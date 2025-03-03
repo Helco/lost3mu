@@ -27,8 +27,74 @@ using Sharp86;
 
 namespace Win3muCore
 {
-    public class Machine : CPU, DosApi.ISite, IMemoryBus
+    internal class Win3muCPU(
+        DosApi _dos,
+        StackWalker _stackWalker,
+        List<Action> _systemThunkHanders,
+        Dictionary<ushort, string> _thunkNames,
+        Action _sysRetInterrupt)
+        : CPU
     {
+        public DosApi DOS
+        {
+            get => _dos;
+            set => _dos = value;
+        }
+
+        public override void RaiseInterrupt(byte interruptNumber)
+        {
+            // System call?
+            switch (interruptNumber)
+            {
+                case Machine.SysCallInterrupt:
+                    {
+                        // Check index is valid
+                        if (ax < _systemThunkHanders.Count)
+                        {
+                            // Invoke it
+                            _stackWalker.EnterTransition(_thunkNames[ax]);
+                            try
+                            {
+                                _systemThunkHanders[ax]();
+                            }
+                            finally
+                            {
+                                _stackWalker.LeaveTransition();
+                            }
+
+                            return;
+                        }
+                        break;
+                    }
+
+                case Machine.SysRetInterrupt:
+                    {
+                        // Mark the end of the system ret call
+                        _sysRetInterrupt();
+                        return;
+                    }
+
+                case 0x1A:
+                    _dos.DispatchInt1A();
+                    return;
+
+                case 0x21:
+                    _dos.DispatchInt21();
+                    return;
+
+                case 0x2f:
+                    _dos.DispatchInt2f();
+                    return;
+            }
+
+            base.RaiseInterrupt(interruptNumber);
+        }
+    }
+
+    public class Machine : DosApi.ISite, IMemoryBus
+    {
+        private readonly Win3muCPU cpu;
+
         public Machine()
         {
             if (!System.Diagnostics.Debugger.IsAttached)
@@ -48,12 +114,13 @@ namespace Win3muCore
             _moduleManager = new ModuleManager(this);
             _messaging = new Messaging(this);
             _variableResolver = new VariableResolver();
-            _expressionContext = new ExpressionContext(this);
             _symbolResolver = new SymbolResolver(this);
             _stackWalker = new StackWalker(this);
+            cpu = new Win3muCPU(_dos, _stackWalker, _systemThunkHanders, _thunkNames, () => _sysRetDepth--);
+            _expressionContext = new ExpressionContext(cpu);
             _expressionContext.PushSymbolScope(_symbolResolver);
 
-            this.MemoryBus = _globalHeap;
+            cpu.MemoryBus = _globalHeap;
 
             RegisterVariables();
 
@@ -67,7 +134,8 @@ namespace Win3muCore
             CreateSysRetThunk();
 
             // Creae DOS Api handler
-            _dos = new DosApi(this, this);
+            _dos = new DosApi(cpu, this);
+            cpu.DOS = _dos;
 
             // Load standard modules
             _kernel = _moduleManager.LoadModule(new Kernel()) as Kernel;
@@ -80,9 +148,9 @@ namespace Win3muCore
             _moduleManager.LoadModule(new Sound());
             //_moduleManager.LoadModule(new Win87em());
 
-            _disassembler = new Disassembler(this);
+            _disassembler = new Disassembler(cpu);
 
-            this.InstructionHook = () =>
+            cpu.InstructionHook = () =>
             {
                 if (logExecution)
                 {
@@ -123,7 +191,7 @@ namespace Win3muCore
             Log.Flush();
 
             // Prevent re-entrancy while message box is shown
-            IsStoppedInDebugger = true;
+            cpu.IsStoppedInDebugger = true;
 
             // Unwrap useless exception wrapper
             var x = args.ExceptionObject as Exception;
@@ -227,7 +295,7 @@ namespace Win3muCore
                 {
                     // Connect debugger
                     _debugger = new Debugging.Win3muDebugger(this);
-                    _debugger.CPU = this;
+                    _debugger.CPU = cpu;
                     _debugger.ExpressionContext = ExpressionContext;
                     _debugger.CommandDispatcher.RegisterCommandHandler(new Win3muCore.Debugging.DebuggerCommandExtensions(this));
                     _debugger.SettingsFile = VariableResolver.Resolve(DebuggerSettingsFile);
@@ -270,7 +338,7 @@ namespace Win3muCore
                     // Run until finished
                     while (!_finished)
                     {
-                        Run(1000000);
+                        cpu.Run(1000000);
                     }
                 }
                 finally
@@ -440,28 +508,28 @@ namespace Win3muCore
                     Log.Write("--> Native to Emulated Transition: {0:X8} (depth={1})\n", lpfnProc, _sysRetDepth);
 
                 // Save the old IP
-                var oldCS = cs;
-                var oldIP = ip;
+                var oldCS = cpu.cs;
+                var oldIP = cpu.ip;
 
                 // Setup the new IP
-                cs = lpfnProc.Hiword();
-                ip = lpfnProc.Loword();
+                cpu.cs = lpfnProc.Hiword();
+                cpu.ip = lpfnProc.Loword();
 
                 // Push address of the exit routine
-                this.PushDWord(_sysRetThunk);
+                cpu.PushDWord(_sysRetThunk);
 
                 // Setup the sys call
                 _sysRetDepth++;
                 uint sysCallDepthAtCall= _sysRetDepth;
 
                 // Fake FixDS
-                this.ax = this.ss;
+                cpu.ax = cpu.ss;
 
                 // Process until the sys return thunk is invoked
                 while (_sysRetDepth >= sysCallDepthAtCall)
                 {
                     // Hrm - this isn't too efficient but will do for now.
-                    Run(1);
+                    cpu.Run(1);
                 }
 
                 if (logExecution)
@@ -470,8 +538,8 @@ namespace Win3muCore
                 // Restore stack
                 if (oldCS != 0)
                 {
-                    cs = oldCS;
-                    ip = oldIP;
+                    cpu.cs = oldCS;
+                    cpu.ip = oldIP;
                 }
             }
             finally
@@ -482,7 +550,7 @@ namespace Win3muCore
 
         public void ExitProcess(int code)
         {
-            AbortRunFrame();
+            cpu.AbortRunFrame();
             _finished = true;
             _exitCode = code;
         }
@@ -568,55 +636,6 @@ namespace Win3muCore
 
         public const byte SysCallInterrupt = 0x80;
         public const byte SysRetInterrupt = 0x81;                    
-
-        public override void RaiseInterrupt(byte interruptNumber)
-        {
-            // System call?
-            switch (interruptNumber)
-            {
-                case SysCallInterrupt:
-                {
-                    // Check index is valid
-                    if (ax < _systemThunkHanders.Count)
-                    {
-                        // Invoke it
-                        _stackWalker.EnterTransition(_thunkNames[ax]);
-                        try
-                        {
-                            _systemThunkHanders[ax]();
-                        }
-                        finally
-                        {
-                            _stackWalker.LeaveTransition();
-                        }
-
-                        return;
-                    }
-                    break;
-                }
-
-                case SysRetInterrupt:
-                {
-                    // Mark the end of the system ret call
-                    _sysRetDepth--;
-                    return;
-                }
-
-                case 0x1A:
-                    _dos.DispatchInt1A();
-                    return;
-
-                case 0x21:
-                    _dos.DispatchInt21();
-                    return;
-
-                case 0x2f:
-                    _dos.DispatchInt2f();
-                    return;
-            }
-
-            base.RaiseInterrupt(interruptNumber);
-        }
 
         List<Action> _systemThunkHanders = new List<Action>();
         Dictionary<ushort, string> _thunkNames = new Dictionary<ushort, string>();
@@ -745,41 +764,41 @@ namespace Win3muCore
                     return System.IO.Path.GetDirectoryName(typeof(Machine).Assembly.Location);
                 return null;
             });
-            _variableResolver.Register("ax", () => ax.ToString("X4"));
-            _variableResolver.Register("bx", () => bx.ToString("X4"));
-            _variableResolver.Register("cx", () => cx.ToString("X4"));
-            _variableResolver.Register("dx", () => dx.ToString("X4"));
-            _variableResolver.Register("si", () => si.ToString("X4"));
-            _variableResolver.Register("di", () => di.ToString("X4"));
-            _variableResolver.Register("sp", () => sp.ToString("X4"));
-            _variableResolver.Register("bp", () => bp.ToString("X4"));
-            _variableResolver.Register("ip", () => ip.ToString("X4"));
-            _variableResolver.Register("cs", () => cs.ToString("X4"));
-            _variableResolver.Register("es", () => es.ToString("X4"));
-            _variableResolver.Register("ds", () => ds.ToString("X4"));
-            _variableResolver.Register("ss", () => ss.ToString("X4"));
-            _variableResolver.Register("eflags", () => EFlags.ToString("X4"));
-            _variableResolver.Register("al", () => al.ToString("X2"));
-            _variableResolver.Register("ah", () => ah.ToString("X2"));
-            _variableResolver.Register("bl", () => bl.ToString("X2"));
-            _variableResolver.Register("bh", () => bh.ToString("X2"));
-            _variableResolver.Register("cl", () => cl.ToString("X2"));
-            _variableResolver.Register("ch", () => ch.ToString("X2"));
-            _variableResolver.Register("dl", () => dl.ToString("X2"));
-            _variableResolver.Register("dh", () => dh.ToString("X2"));
+            _variableResolver.Register("ax", () => cpu.ax.ToString("X4"));
+            _variableResolver.Register("bx", () => cpu.bx.ToString("X4"));
+            _variableResolver.Register("cx", () => cpu.cx.ToString("X4"));
+            _variableResolver.Register("dx", () => cpu.dx.ToString("X4"));
+            _variableResolver.Register("si", () => cpu.si.ToString("X4"));
+            _variableResolver.Register("di", () => cpu.di.ToString("X4"));
+            _variableResolver.Register("sp", () => cpu.sp.ToString("X4"));
+            _variableResolver.Register("bp", () => cpu.bp.ToString("X4"));
+            _variableResolver.Register("ip", () => cpu.ip.ToString("X4"));
+            _variableResolver.Register("cs", () => cpu.cs.ToString("X4"));
+            _variableResolver.Register("es", () => cpu.es.ToString("X4"));
+            _variableResolver.Register("ds", () => cpu.ds.ToString("X4"));
+            _variableResolver.Register("ss", () => cpu.ss.ToString("X4"));
+            _variableResolver.Register("eflags", () => cpu.EFlags.ToString("X4"));
+            _variableResolver.Register("al", () => cpu.al.ToString("X2"));
+            _variableResolver.Register("ah", () => cpu.ah.ToString("X2"));
+            _variableResolver.Register("bl", () => cpu.bl.ToString("X2"));
+            _variableResolver.Register("bh", () => cpu.bh.ToString("X2"));
+            _variableResolver.Register("cl", () => cpu.cl.ToString("X2"));
+            _variableResolver.Register("ch", () => cpu.ch.ToString("X2"));
+            _variableResolver.Register("dl", () => cpu.dl.ToString("X2"));
+            _variableResolver.Register("dh", () => cpu.dh.ToString("X2"));
             _variableResolver.Register("asm", () =>
             {
                 if (_disassembled == null)
-                    _disassembled = _disassembler.Read(cs, ip);
+                    _disassembled = _disassembler.Read(cpu.cs, cpu.ip);
                 return _disassembled;
             });                              
             _variableResolver.Register("annotations", () =>
             {
                 if (_disassembled == null)
-                    _disassembled = _disassembler.Read(cs, ip);
+                    _disassembled = _disassembler.Read(cpu.cs, cpu.ip);
                 return _expressionContext.GenerateDisassemblyAnnotations(_disassembled, _disassembler.ImplicitParams);
             });
-            _variableResolver.Register("cputime", () => CpuTime.ToString());
+            _variableResolver.Register("cputime", () => cpu.CpuTime.ToString());
         }
 
         ExpressionContext _expressionContext;
@@ -817,9 +836,9 @@ namespace Win3muCore
 
         public uint StackAlloc<T>(T value)
         {
-            var saveSP = sp;
-            sp -= (ushort)Marshal.SizeOf<T>();
-            var ptr = BitUtils.MakeDWord(sp, ss);
+            var saveSP = cpu.sp;
+            cpu.sp -= (ushort)Marshal.SizeOf<T>();
+            var ptr = BitUtils.MakeDWord(cpu.sp, cpu.ss);
             WriteStruct(ptr, ref value);
             return ptr;
         }
@@ -954,10 +973,10 @@ namespace Win3muCore
         public uint CallWndProc16(uint lpfnProc, ushort hWnd, ushort message, ushort wParam, uint lParam)
         {
             // Push parameters
-            this.PushWord(hWnd);
-            this.PushWord(message);
-            this.PushWord(wParam);
-            this.PushDWord(lParam);
+            cpu.PushWord(hWnd);
+            cpu.PushWord(message);
+            cpu.PushWord(wParam);
+            cpu.PushDWord(lParam);
 
             if (NotifyCallWndProc16 != null)
                 NotifyCallWndProc16();
@@ -966,21 +985,21 @@ namespace Win3muCore
             CallVM(lpfnProc, "WndProc");
 
             // Return value
-            return (uint)(dx << 16 | ax);
+            return (uint)(cpu.dx << 16 | cpu.ax);
         }
 
         public uint CallHookProc16(uint lpfnProc, short code, ushort wParam, uint lParam)
         {
             // Push parameters
-            this.PushWord((ushort)code);
-            this.PushWord(wParam);
-            this.PushDWord(lParam);
+            cpu.PushWord((ushort)code);
+            cpu.PushWord(wParam);
+            cpu.PushDWord(lParam);
 
             // Call the VM
             CallVM(lpfnProc, "HookProc");
 
             // Return value
-            return (uint)(dx << 16 | ax);
+            return (uint)(cpu.dx << 16 | cpu.ax);
         }
 
         public static Encoding AnsiEncoding = Encoding.GetEncoding(1252);
