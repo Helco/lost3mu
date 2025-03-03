@@ -139,7 +139,11 @@ namespace Win3muCore
         // 0137 - MIDIINRESET - 0137
         // 0138 - MIDIINGETID - 0138
         // 0139 - MIDIINMESSAGE - 0139
-        // 015E - AUXGETNUMDEVS - 015E
+
+        [EntryPoint(0x15E)]
+        [DllImport("winmm.dll")]
+        public static extern WinUInt auxGetNumDevs();
+
         // 015F - AUXGETDEVCAPS - 015F
         // 0160 - AUXGETVOLUME - 0160
         // 0161 - AUXSETVOLUME - 0161
@@ -189,7 +193,10 @@ namespace Win3muCore
         // 025C - TIMEGETDEVCAPS - 025C
         // 025D - TIMEBEGINPERIOD - 025D
         // 025E - TIMEENDPERIOD - 025E
-        // 025F - TIMEGETTIME - 025F
+
+        [EntryPoint(0x25F)]
+        [DllImport("winmm.dll")]
+        public static extern WinUInt timeGetTime();
 
         [DllImport("winmm.dll", CharSet = CharSet.Unicode, EntryPoint = "mciSendCommandW")]
         public static extern uint mciSendCommand(uint IDDevice, uint message, IntPtr fdwCommand, IntPtr dwParam);

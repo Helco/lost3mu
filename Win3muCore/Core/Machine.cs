@@ -205,6 +205,7 @@ namespace Win3muCore
                 MergeConfig(cl.Config, baseProgramName, config, System.IO.Path.Combine(System.IO.Path.GetDirectoryName(programName), "config.json"));
                 MergeConfig(cl.Config, baseProgramName, config, System.IO.Path.ChangeExtension(programName, ".json"));
                 Json.ReparseInto(this, config);
+                consoleLogger = true;
 
                 // Need console?
                 if (enableDebugger || consoleLogger)
