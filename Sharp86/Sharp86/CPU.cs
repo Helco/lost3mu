@@ -1045,7 +1045,35 @@ namespace Sharp86
                             break;
 
                         case 0x0F:
-                            throw new InvalidOpCodeException();
+                            // 2-Byte opcodes
+                            _m1 = true;
+                            opCode = _activeMemoryBus.ReadByte(cs, ip++);
+                            _m1 = false;
+                            switch (opCode)
+                            {
+                                case 0x02: // TODO: Actually implement LAR and LSL
+                                    // LAR Gv, Ew
+                                    if (_activeMemoryBus.TryGetAccessRights(Read_Ev(), out var accessRights))
+                                    {
+                                        Write_Ev(accessRights);
+                                        FlagZ = true;
+                                    }
+                                    else
+                                        FlagZ = false;
+                                    break;
+                                case 0x03:
+                                    // LSL Gv, Ew
+                                    if (_activeMemoryBus.TryGetSegmentLimit(Read_Ev(), out var segmentLimit))
+                                    {
+                                        Write_Ev(segmentLimit);
+                                        FlagZ = true;
+                                    }
+                                    else
+                                        FlagZ = false;
+                                    break;
+                                default: throw new InvalidOpCodeException();
+                            }
+                            break;
 
                         case 0x10:
                             // ADC Eb, Gb

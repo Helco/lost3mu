@@ -592,8 +592,13 @@ namespace Sharp86
                         return string.Format("pop {0}", Format((RegSeg)((opCode >> 3) & 0x03)));
 
                     case 0x0F:
-                        // No pop cs instruction
-                        throw new InvalidOpCodeException();
+                        opCode = ReadByte(cs, ip++);
+                        switch(opCode)
+                        {
+                            case 0x02: return string.Format("lar {0}, {1}", Read_Gv(), Read_Ev());
+                            case 0x03: return string.Format("lsl {0}, {1}", Read_Gv(), Read_Ev());
+                            default: throw new InvalidOpCodeException();
+                        }
 
                     case 0x08:
                     case 0x09:

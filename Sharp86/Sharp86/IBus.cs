@@ -27,6 +27,16 @@ namespace Sharp86
         byte ReadByte(ushort seg, ushort offset);
         void WriteByte(ushort seg, ushort offset, byte value);
         bool IsExecutableSelector(ushort seg);
+        bool TryGetAccessRights(ushort seg, out ushort accessRights)
+        {
+            accessRights = 0;
+            return false;
+        }
+        bool TryGetSegmentLimit(ushort seg, out ushort segmentLimit)
+        {
+            segmentLimit = 0;
+            return false;
+        }
     }
 
     public interface IPortBus
