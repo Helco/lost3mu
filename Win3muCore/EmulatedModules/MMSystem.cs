@@ -1,4 +1,4 @@
-﻿/*
+/*
 Win3mu - Windows 3 Emulator
 Copyright (C) 2017 Topten Software.
 
@@ -98,12 +98,22 @@ namespace Win3muCore
         // 0020 - STACKENTER - 0020
         // 0021 - STACKLEAVE - 0021
         // 0022 - MMDRVINSTALL - 0022
+
+        public const int JOYERR_NOERROR = 0;
+        public const int JOYERR_BASE = 160;
+        public const int JOYERR_PARMS = JOYERR_BASE + 5;
+        public const int JOYERR_NOCANDO = JOYERR_BASE + 6;
+        public const int JOYERR_UNPLUGGED = JOYERR_BASE + 7;
+
         // 0065 - JOYGETNUMDEVS - 0065
         // 0066 - JOYGETDEVCAPS - 0066
         // 0067 - JOYGETPOS - 0067
         // 0068 - JOYGETTHRESHOLD - 0068
         // 0069 - JOYRELEASECAPTURE - 0069
-        // 006A - JOYSETCAPTURE - 006A
+
+        [EntryPoint(0x006A)]
+        public static WinUInt joySetCapture(HWND hwnd, WinUInt uJoyID, WinUInt uPeriod, bool bChanged) => JOYERR_UNPLUGGED;
+
         // 006B - JOYSETTHRESHOLD - 006B
         // 006D - JOYSETCALIBRATION - 006D
 
@@ -111,7 +121,10 @@ namespace Win3muCore
         [DllImport("winmm.dll")]
         public static extern WinUInt midiOutGetNumDevs();
 
-        // 00CA - MIDIOUTGETDEVCAPS - 00CA
+        [EntryPoint(0x00CA)]
+        [DllImport("winmm.dll")]
+        public static extern WinUInt midiOutGetDevCaps(WinUInt deviceID, out WinCommon.MIDIOUTCAPS lpCaps, WinUInt size);
+
         // 00CB - MIDIOUTGETERRORTEXT - 00CB
         // 00CC - MIDIOUTOPEN - 00CC
         // 00CD - MIDIOUTCLOSE - 00CD
@@ -153,7 +166,10 @@ namespace Win3muCore
         [DllImport("winmm.dll")]
         public static extern WinUInt waveOutGetNumDevs();
 
-        // 0192 - WAVEOUTGETDEVCAPS - 0192
+        [EntryPoint(0x0192)]
+        [DllImport("winmm.dll")]
+        public static extern WinUInt waveOutGetDevCaps(WinUInt deviceID, out WinCommon.WAVEOUTCAPS lpCaps, WinUInt size);
+
         // 0193 - WAVEOUTGETERRORTEXT - 0193
         // 0194 - WAVEOUTOPEN - 0194
         // 0195 - WAVEOUTCLOSE - 0195

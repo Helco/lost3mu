@@ -1085,14 +1085,22 @@ namespace Win3muCore
         // 01D6 - GETCURRENTPOSITIONEX
         // 01D7 - GETTEXTEXTENTPOINT
         // 01D8 - GETVIEWPORTEXTEX
-        // 01D9 - GETVIEWPORTORGEX
+
+        [EntryPoint(0x1D9)]
+        [DllImport("gdi32.dll")]
+        public static extern bool GetViewportExtEx(HDC hdc, out Win16.SIZE lpsz);
+
         // 01DA - GETWINDOWEXTEX
         // 01DB - GETWINDOWORGEX
         // 01DC - OFFSETVIEWPORTORGEX
         // 01DD - OFFSETWINDOWORGEX
         // 01DE - SETBITMAPDIMENSIONEX
         // 01DF - SETVIEWPORTEXTEX
-        // 01E0 - SETVIEWPORTORGEX
+
+        [EntryPoint(0x01E0)]
+        [DllImport("gdi32.dll")]
+        public static extern bool SetViewportOrgEx(HDC hdc, WinInt x, WinInt y, out Win16.POINT lppt);
+
         // 01E1 - SETWINDOWEXTEX
         // 01E2 - SETWINDOWORGEX
         // 01E3 - MOVETOEX

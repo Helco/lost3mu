@@ -1188,7 +1188,14 @@ namespace Win3muCore
         // 015D - _HREAD
         // 015E - _HWRITE
         // 015F - BUNNY_351
-        // 0161 - LSTRCPYN
+
+        [EntryPoint(0x0161)]
+        public uint lstrcpyn(uint destPtr, string srcPtr, ushort length)
+        {
+            _machine.WriteString(destPtr, srcPtr, length);
+            return destPtr;
+        }
+
         // 0162 - GETAPPCOMPATFLAGS
         // 0163 - GETWINDEBUGINFO
         // 0164 - SETWINDEBUGINFO

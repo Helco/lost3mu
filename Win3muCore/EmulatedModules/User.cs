@@ -2254,7 +2254,10 @@ namespace Win3muCore
         public static extern WinUInt GetMenuState(HMENU hMenu, WinUInt uId, WinUInt uFlags);
 
         // 00FB - SENDDRIVERMESSAGE
-        // 00FC - OPENDRIVER
+
+        [EntryPoint(0x00FC)] // in GRLDEMO used for joystick access. No Need for now
+        public static WinUInt OpenDriver(string szDriverName, string szSectionName, uint lParam) => 0; 
+
         // 00FD - CLOSEDRIVER
         // 00FE - GETDRIVERMODULEHANDLE
         // 00FF - DEFDRIVERPROC

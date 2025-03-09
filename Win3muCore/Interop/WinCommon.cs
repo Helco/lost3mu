@@ -463,5 +463,32 @@ namespace Win3muCore
         public const ushort DDL_ATTRIBUTE_MASK = DDL_READONLY | DDL_HIDDEN | DDL_SYSTEM | DDL_ARCHIVE | DDL_DIRECTORY;
         public const ushort DDL_EXPLICIT_MASK = DDL_READONLY | DDL_HIDDEN | DDL_SYSTEM | DDL_DIRECTORY;
 
+        public const int MAXPNAMELEN = 32;
+
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        public unsafe struct MIDIOUTCAPS
+        {
+            public ushort wMid;
+            public ushort wPid;
+            public ushort vDriverVersion;
+            public fixed char szPname[MAXPNAMELEN];
+            public ushort wTechnology;
+            public ushort wVoices;
+            public ushort wNotes;
+            public ushort wChannelMask;
+            public uint dwSupport;
+        }
+        
+        [StructLayout(LayoutKind.Sequential, Pack = 2)]
+        public unsafe struct WAVEOUTCAPS
+        {
+            public ushort wMid;
+            public ushort wPid;
+            public ushort vDriverVersion;
+            public fixed char szPname[MAXPNAMELEN];
+            public uint dwFormats;
+            public ushort wChannels;
+            public uint dwSupport;
+        }
     }
 }
