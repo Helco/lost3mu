@@ -651,7 +651,7 @@ namespace Win3muCore
                 if ((style & Win16.OF_EXIST) != 0)
                 {
                     _machine.Dos.CloseFile(file.handle);
-                    return 0;
+                    return 1; // The docu is not very clear on this, but GRAIL tests for 0 as well as HFILE_ERROR
                 }
 
                 return (short)file.handle;
