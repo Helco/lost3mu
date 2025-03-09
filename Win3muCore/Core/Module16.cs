@@ -532,11 +532,12 @@ namespace Win3muCore
 
                 if (data[ep.segmentOffset] != 0x1e || data[ep.segmentOffset+1] != 0x58 || data[ep.segmentOffset+2] !=0x90)
                 {
-                    /*
+                    
                     Log.Write("WARNING: Patching exported entry point prolog, existing code looks wrong at 0x{0:X4}:{1:X4}", ep.segmentNumber, ep.segmentOffset);
                     if (machine.StrictMode)
                         throw new InvalidDataException("Module entry point prolog wrong - see log");
-                        */
+                    continue;
+                        
                 }
 
                 if ((ep.flags & Win3muCore.NeFile.EntryPoint.FLAG_SHAREDDS)!=0)

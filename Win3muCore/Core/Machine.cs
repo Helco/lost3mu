@@ -141,7 +141,7 @@ namespace Win3muCore
         }
 
         // Fail on anything sus
-        public bool StrictMode = true;
+        public bool StrictMode = false;
 
         DebuggerCore _debugger;
         StackWalker _stackWalker;
@@ -205,7 +205,6 @@ namespace Win3muCore
                 MergeConfig(cl.Config, baseProgramName, config, System.IO.Path.Combine(System.IO.Path.GetDirectoryName(programName), "config.json"));
                 MergeConfig(cl.Config, baseProgramName, config, System.IO.Path.ChangeExtension(programName, ".json"));
                 Json.ReparseInto(this, config);
-                consoleLogger = true;
 
                 // Need console?
                 if (enableDebugger || consoleLogger)
@@ -582,10 +581,11 @@ namespace Win3muCore
                     if (ax < _systemThunkHanders.Count)
                     {
                         // Invoke it
-                        _stackWalker.EnterTransition(_thunkNames[ax]);
+                        ushort thunk = ax; // for debugging
+                        _stackWalker.EnterTransition(_thunkNames[thunk]);
                         try
                         {
-                            _systemThunkHanders[ax]();
+                            _systemThunkHanders[thunk]();
                         }
                         finally
                         {
