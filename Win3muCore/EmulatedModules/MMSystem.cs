@@ -1,4 +1,4 @@
-/*
+﻿/*
 Win3mu - Windows 3 Emulator
 Copyright (C) 2017 Topten Software.
 
@@ -29,6 +29,13 @@ namespace Win3muCore
     [Module("MMSYSTEM", @"C:\WINDOWS\SYSTEM\MMSYSTEM.DLL")]
     public class MMSystem : Module32
     {
+        private readonly Lazy<Kernel> kernel;
+
+        public MMSystem() : base()
+        {
+            kernel = new(() => (Kernel)this._machine.ModuleManager.GetModule("KERNEL"));
+        }
+
         public string ResolveMediaFile(string filename)
         {
             if (string.IsNullOrEmpty(filename))
@@ -392,11 +399,41 @@ namespace Win3muCore
         // 044E - DRVSENDMESSAGE - 044E
         // 044F - DRVGETMODULEHANDLE - 044F
         // 0450 - DRVDEFDRIVERPROC - 0450
-        // 04BA - MMIOOPEN - 04BA
-        // 04BB - MMIOCLOSE - 04BB
-        // 04BC - MMIOREAD - 04BC
-        // 04BD - MMIOWRITE - 04BD
-        // 04BE - MMIOSEEK - 04BE
+
+        // TODO: MMIO files are not quite right, maybe it suffices for GRAIL?
+
+        [EntryPoint(0x4BA)]
+        public short mmioOpen(string szFilename, [MustBeNull] IntPtr lpmmioinfo, uint dwOpenFlags)
+        {
+            Win16.OFSTRUCT of = default;
+            return kernel.Value.OpenFile(szFilename, ref of, (ushort)dwOpenFlags);
+        }
+
+        [EntryPoint(0x4BB)]
+        public short mmioClose(ushort hmmio, WinUInt _) =>
+            kernel.Value._lclose(hmmio);
+
+        [EntryPoint(0x4BC)]
+        public int mmioRead(ushort hmmio, uint ptr, int cch)
+        {
+            try
+            {
+                return _machine.Dos.ReadFile(hmmio, checked((ushort)cch), ptr.Hiword(), ptr.Loword());
+            }
+            catch (DosError)
+            {
+                return -1;
+            }
+        }
+
+        [EntryPoint(0x4BD)]
+        public int mmioWrite(ushort hmmio, uint pch, int cch) =>
+            kernel.Value._lwrite(hmmio, pch, checked((ushort)cch));
+
+        [EntryPoint(0x4BE)]
+        public int mmioSeek(ushort hmmio, int offset, short origin) =>
+            kernel.Value._llseek(hmmio, offset, origin);
+
         // 04BF - MMIOGETINFO - 04BF
         // 04C0 - MMIOSETINFO - 04C0
         // 04C1 - MMIOSETBUFFER - 04C1
